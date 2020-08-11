@@ -9,8 +9,8 @@ redirect_from:
 - /engine/userguide/networking/default_network/container-communication/
 ---
 
-The type of network a container uses, whether it is a [bridge](bridges.md), an
-[overlay](overlay.md), a [macvlan network](macvlan.md), or a custom network
+The type of network a container uses, whether it is a [bridge](../../network/bridge.md), an
+[overlay](../../network/overlay.md), a [macvlan network](../../network/macvlan.md), or a custom network
 plugin, is transparent from within the container. From the container's point of
 view, it has a network interface with an IP address, a gateway, a routing table,
 DNS services, and other networking details (assuming the container is not using
@@ -28,7 +28,7 @@ port to a port on the Docker host. Here are some examples.
 | Flag value                      | Description                                                                                                                                     |
 |---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | `-p 8080:80`                    | Map TCP port 80 in the container to port 8080 on the Docker host.                                                                               |
-| `-p 192.168.1.100:8080:80`      | Map TCP port 80 in the container to port 8080 on the Docker host for connections to host IP 192.168.1.100.                    |
+| `-p 192.168.1.100:8080:80`      | Map TCP port 80 in the container to port 8080 on the Docker host for connections to host IP 192.168.1.100.                                      |
 | `-p 8080:80/udp`                | Map UDP port 80 in the container to port 8080 on the Docker host.                                                                               |
 | `-p 8080:80/tcp -p 8080:80/udp` | Map TCP port 80 in the container to TCP port 8080 on the Docker host, and map UDP port 80 in the container to UDP port 8080 on the Docker host. |
 
@@ -56,8 +56,17 @@ flag to specify an additional network alias for the container on that network.
 
 ## DNS services
 
-By default, a container inherits the DNS settings of the Docker daemon,
-including the `/etc/hosts` and `/etc/resolv.conf`.You can override these
+By default, a container inherits the DNS settings of the host, as defined in the
+`/etc/resolv.conf` configuration file. Containers that use the default `bridge`
+network get a copy of this file, whereas containers that use a
+[custom network](../../network/network-tutorial-standalone.md#use-user-defined-bridge-networks)
+use Docker's embedded DNS server, which forwards external DNS lookups to the DNS
+servers configured on the host.
+
+Custom hosts defined in `/etc/hosts` are not inherited. To pass additional hosts
+into your container, refer to [add entries to container hosts file](../../engine/reference/commandline/run.md#add-entries-to-container-hosts-file---add-host)
+in the `docker run` reference documentation. You can override these settings on
+a per-container basis.
 settings on a per-container basis.
 
 | Flag           | Description                                                                                                                                                                                                                                                         |
@@ -70,4 +79,4 @@ settings on a per-container basis.
 ## Proxy server
 
 If your container needs to use a proxy server, see
-[Use a proxy server](/network/proxy.md).
+[Use a proxy server](../../network/proxy.md).

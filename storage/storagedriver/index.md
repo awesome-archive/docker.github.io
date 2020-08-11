@@ -18,8 +18,8 @@ Storage drivers allow you to create data in the writable layer of your container
 The files won't be persisted after the container is deleted, and both read and
 write speeds are lower than native file system performance. 
 
- > **Note**: Operations that are known to be problematic include write-intensive database storage, 
-particularly when pre-existing data exists in the write-only layer. More details are provided in this document.
+ > **Note**: Operations that are known to be problematic include write-intensive database storage,
+particularly when pre-existing data exists in the read-only layer. More details are provided in this document.
 
 [Learn how to use volumes](../volumes.md) to persist data and improve performance.
 
@@ -29,7 +29,7 @@ A Docker image is built up from a series of layers. Each layer represents an
 instruction in the image's Dockerfile. Each layer except the very last one is
 read-only. Consider the following Dockerfile:
 
-```conf
+```dockerfile
 FROM ubuntu:18.04
 COPY . /app
 RUN make /app
@@ -163,7 +163,7 @@ Docker 1.10).
 Now imagine that you have two different Dockerfiles. You use the first one to
 create an image called `acme/my-base-image:1.0`.
 
-```conf
+```dockerfile
 FROM ubuntu:18.04
 COPY . /app
 ```
@@ -171,7 +171,7 @@ COPY . /app
 The second one is based on `acme/my-base-image:1.0`, but has some additional
 layers:
 
-```conf
+```dockerfile
 FROM acme/my-base-image:1.0
 CMD /app/hello.sh
 ```
@@ -400,5 +400,5 @@ work, with one or more virtual disks per virtual machine.
 
 ## Related information
 
-* [Volumes](/storage/volumes.md)
+* [Volumes](../volumes.md)
 * [Select a storage driver](select-storage-driver.md)

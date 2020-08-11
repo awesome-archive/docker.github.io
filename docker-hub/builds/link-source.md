@@ -14,7 +14,7 @@ repositories. You can configure this link for user accounts or
 organizations.
 
 
-> **Note**: If you are linking a source code provider to create autobuilds for a team, follow the instructions to [create a service account](/docker-hub/builds.md#service-users-for-team-autobuilds) for the team before linking the account as described below.
+> **Note**: If you are linking a source code provider to create autobuilds for a team, follow the instructions to [create a service account](index.md#service-users-for-team-autobuilds) for the team before linking the account as described below.
 
 ## Link to a GitHub user account
 
@@ -33,9 +33,9 @@ organizations.
     >**Note**: If you are the owner of any GitHub organizations, you might see
     options to grant Docker Hub access to them from this screen. You can also
     individually edit an organization's third-party access settings to grant or
-    revoke Docker Hub's access. See [Grant access to a GitHub
-    organization](link-source.md#grant-access-to-a-github-organization) to
-    learn more.
+    revoke Docker Hub's access. See
+    [Grant access to a GitHub organization](link-source.md#grant-access-to-a-github-organization)
+    to learn more.
 
 5. Click **Authorize docker** to save the link.
 

@@ -2,17 +2,409 @@
 description: Change log / release notes per edge release
 keywords: Docker Desktop for Windows, edge, release notes
 title: Docker Desktop for Windows Edge Release notes
+toc_min: 1
+toc_max: 2
 ---
 
 This page contains information about Docker Desktop Edge releases. Edge releases give you early access to our newest features. Note that some of the features may be experimental, and some of them may not ever reach the Stable release.
 
-For information about Stable releases, see the [Stable release
-notes](release-notes). For Docker Desktop system requirements, see
+For information about Stable releases, see the [Stable release notes](release-notes.md). For Docker Desktop system requirements, see
 [What to know before you install](install.md#what-to-know-before-you-install).
 
-## Edge Releases of 2019
+## Docker Desktop Community 2.3.4.0
+2020-07-28
 
-### Docker Desktop Community 2.1.5.0
+> [Download](https://desktop.docker.com/win/edge/46980/Docker%20Desktop%20Installer.exe)
+
+### New
+
+- Docker Desktop introduces the new **Images** view to the Docker Dashboard. The Images view allows users to view a list of Docker images on the disk, run an image as a container, pull the latest version of an image from Docker Hub, inspect images, and remove any unwanted images from the disk.
+
+  To access the new Images view, from the Docker menu, select **Dashboard** > **Images**.
+
+### Upgrades
+
+- [Docker ECS integration v1.0.0-beta.4](https://github.com/docker/ecs-plugin/releases/tag/v1.0.0-beta.4){: target="_blank" class="_”}
+- [Kubernetes 1.18.6](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.6){: target="_blank" class="_”}
+
+### Bug fixes and minor changes
+
+- UI changes to dark or light theme depending on Windows default app mode.
+- Copying the container logs from the dashboard does not copy the ANSI color codes to the clipboard anymore.
+
+## Docker Desktop Community 2.3.3.2
+2020-07-21
+
+> [Download](https://desktop.docker.com/win/edge/46784/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- [Docker ECS integration v1.0.0-beta.2](https://github.com/docker/ecs-plugin/releases/tag/v1.0.0-beta.2){: target="_blank" class="_”}
+- [Docker ACI integration 0.1.10](https://github.com/docker/aci-integration-beta/releases/tag/v0.1.10){: target="_blank" class="_”}
+
+## Docker Desktop Community 2.3.3.1
+2020-07-10
+
+> [Download](https://desktop.docker.com/win/edge/46608/Docker%20Desktop%20Installer.exe)
+
+### Bug fixes and minor changes
+
+- Fixed a bug where the ECS plugin was not visible from WSL 2.
+
+## Docker Desktop Community 2.3.3.0
+2020-07-09
+
+> [Download](https://desktop.docker.com/win/edge/46574/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- Beta release of [Docker ECS integration v1.0.0-beta.1.](https://docs.docker.com/engine/context/ecs-integration/)
+- [Docker ACI integration v0.1.7](https://github.com/docker/aci-integration-beta/releases/tag/v0.1.7)
+- [Docker Compose 1.26.2](https://github.com/docker/compose/releases/tag/1.26.2)
+
+### Bug fixes and minor changes
+
+- Compose-on-Kubernetes is no longer included in the Docker Desktop installer. You can download it separately from the compose-on-kubernetes [release page](https://github.com/docker/compose-on-kubernetes/releases).
+
+## Docker Desktop Community 2.3.2.1
+2020-06-29
+
+> [Download](https://desktop.docker.com/win/edge/46329/Docker%20Desktop%20Installer.exe)
+
+### Security
+
+- Fixed a regression in Docker Desktop Edge 2.3.2.0 on Windows where the Docker API was exposed by default on a random port on all interfaces.
+
+## Docker Desktop Community 2.3.2.0
+2020-06-25
+
+### Upgrades
+
+- [Docker 19.03.12](https://github.com/docker/docker-ce/releases/tag/v19.03.12)
+- [Docker Compose 1.26.0](https://github.com/docker/compose/releases/tag/1.26.0)
+- [Kubernetes 1.18.3](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.3)
+- Beta release of the [Docker ACI integration](https://docs.docker.com/engine/context/aci-integration/)
+
+### Bug fixes and minor changes
+
+- Fixed application startup if `hosts` is specified inside the Docker `daemon.json`. See [docker/for-win#6895](https://github.com/docker/for-win/issues/6895#issuecomment-637429117).
+- Fixed opening a CLI from the dashboard for Windows containers. See [docker/for-win#7079](https://github.com/docker/for-win/issues/7079).
+- Fixed an issue where adding a folder on a non-existing drive in the settings would create an empty entry. See [docker/for-win#6797](docker/for-win#6797).
+- Fixed an issue when updating Windows to a WSL 2 capable version, where a configuration file is locked by the old Hyper-V VM.
+- Pinning the application to the taskbar and clicking on it will launch the container view if Docker is already running.
+- Left-clicking on the Docker icon in the system tray now launches the container view Dashboard. See [docker/for-win#6650](https://github.com/docker/for-win/issues/6650).
+- Fixed an issue which blocks Docker Desktop startup if `localhost:2375` is used by another program. See [docker/for-win#6929](https://github.com/docker/for-win/issues/6929) and [docker/for-win#6961](https://github.com/docker/for-win/issues/6961).
+- Docker contexts are now synced between Windows and WSL 2 distributions.
+- Docker Desktop now prompts users to share drives for paths like `////c/Users/foo`, rather than only paths like `C:\Users\foo` and `C:/Users/foo`.
+- The installer now returns a non-zero exit code on error or when the user cancels the installation.
+- Avoid failing withFixed an issue which caused Docker Desktop to fail with `Function not implemented` error during file I/O on shared volumes. See [docker/for-win#5955](https://github.com/docker/for-win/issues/5955).
+- Fixed an issue when bind mounting a mounted host directory inside a container. See [docker/for-win#5089](https://github.com/docker/for-win/issues/5089).
+- Removed the legacy Kubernetes context `docker-for-desktop`. The context `docker-desktop` should be used instead. See [docker/for-win#5089](https://github.com/docker/for-win/issues/5089).
+
+## Docker Desktop Community 2.3.1.0
+2020-05-20
+
+> [Download](https://desktop.docker.com/win/edge/45408/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- [Docker Compose 1.26.0-rc4](https://github.com/docker/compose/releases/tag/1.26.0-rc4)
+- Upgrade to Qemu 4.2.0, add Risc-V support
+
+### Bug fixes and minor changes
+
+**Hyper-V**
+
+- Create drive symlinks in VM at startup to avoid breaking setup that was using them. Fixes [docker/for-win#6628](https://github.com/docker/for-win/issues/6628).
+- Implement `fallocate` for shared filesystems. See [docker/for-win#6658](https://github.com/docker/for-win/issues/6658#issuecomment-627736820).
+
+**WSL 2**
+
+- Configure CLI to use Docker Desktop credential store.
+- Adds a restart button to the popup prompting the user to install the Linux kernel.
+- More reliable bootstrap, do not rely on `wslpath` for path translation, retry mounts on errors at startup.
+
+**Dashboard**
+
+- Fixed containers logs which were sometimes truncated. Fixes [docker/for-win#5954](https://github.com/docker/for-win/issues/5954)
+- Fixed `open with vs code` button for compose app deployed from a WSL 2 Linux Workspace.
+
+**Other fixes**
+
+- Fixed an installer crash when an old and/or partially uninstalled version of Docker Desktop was present on the system. [Fixes docker/for-win/6536](https://github.com/docker/for-win/issues/6536).
+- Fixed home expansion when using tilde in bind mounts source (for example, `-v ~/dir:/vm-dir`)
+- `localhost` and `127.0.0.1` can both be used in the proxy settings to redirect to a proxy on the host. Fixes [docker/for-win#5715](https://github.com/docker/for-win/issues/5715).
+- Fixed a typo in the backend destroy notification. Fixes [docker/for-win#6739](https://github.com/docker/for-win/issues/6739).
+- Fixed a crash which sometimes occurred when Docker Desktop loads a corrupted Docker CLI configuration file. Fixes [docker/for-win#6657](https://github.com/docker/for-win/issues/6657).
+- Fixed a delay when opening the systray menu. Fixes [docker/for-win#1011](https://github.com/docker/for-win/issues/1011).
+
+### Known issues
+
+**WSL 2**
+
+- Swarm service bind mounts are not always restored correctly.
+- Bind mounts of files living outside of the root mount point (files within `/mnt/c`, `/tmp`, `/run...`) don't work correctly when multiple containers mount them.
+
+## Docker Desktop Community 2.3.0.1
+2020-04-28
+
+> [Download](https://download.docker.com/win/edge/44875/Docker%20Desktop%20Installer.exe)
+
+### Bug fixes and minor changes
+
+- Fixed an upgrade bug where users on versions still using the PowerShell-based VM management experience a silent un-installation crash leading to Docker Desktop being uninstalled instead of upgraded.
+- Fixed a crash when failing to login due to no Internet connection.
+- Fixed bug in handling shared volume paths with `..` characters. Fixes [docker/for-win#5375](https://github.com/docker/for-win/issues/5375).
+- WSL 2: Docker Desktop detects when the wsl-distro is stopped and displays an actionable error message.
+- Fixed a bug in `ftruncate` which prevented [libgit2sharp](https://github.com/libgit2/libgit2sharp) from cloning repositories on shared volumes. See [docker/for-win#5808](https://github.com/docker/for-win/issues/5808#issuecomment-610996272).
+- Fixed a bug that caused starting and stopping of a Compose application from the UI to fail when the path contains whitespace.
+
+## Docker Desktop Community 2.3.0.0
+2020-04-20
+
+> [Download](https://download.docker.com/win/edge/44472/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- [Docker Compose 1.25.5](https://github.com/docker/compose/releases/tag/1.25.5)
+- [Go 1.13.10](https://github.com/golang/go/issues?q=milestone%3AGo1.13.10+label%3ACherryPickApproved)
+- [Linux kernel 4.19.76](https://hub.docker.com/layers/docker/for-desktop-kernel/4.19.76-ce15f646db9b062dc947cfc0c1deab019fa63f96-amd64/images/sha256-6c252199aee548e4bdc8457e0a068e7d8e81c2649d4c1e26e4150daa253a85d8?context=repo)
+- LinuxKit [init](https://hub.docker.com/layers/linuxkit/init/1a80a9907b35b9a808e7868ffb7b0da29ee64a95/images/sha256-64cc8fa50d63940dbaa9979a13c362c89ecb4439bcb3ab22c40d300b9c0b597e?context=explore), [runc](https://hub.docker.com/layers/linuxkit/runc/69b4a35eaa22eba4990ee52cccc8f48f6c08ed03/images/sha256-57e3c7cbd96790990cf87d7b0f30f459ea0b6f9768b03b32a89b832b73546280?context=explore), and [containerd](https://hub.docker.com/layers/linuxkit/containerd/09553963ed9da626c25cf8acdf6d62ec37645412/images/sha256-866be7edb0598430709f88d0e1c6ed7bfd4a397b5ed220e1f793ee9067255ff1?context=explore)
+
+### Bug fixes and minor changes
+
+> Docker Desktop Edge 2.3.0.0 fixes 10 issues reported on the [docker/for-win](https://github.com/docker/for-win/issues) GitHub repository.
+
+**WSL 2**
+
+- Detect when the WSL 2 backend stops and allow the user to restart it.
+- Added support for chmod/chown on WSL 2 bind mounts. Fixed [docker/for-win#6284](https://github.com/docker/for-win/issues/6284).
+- Fixed a race condition when exposing ports.
+- Prevent the WSL 2 dialog from blocking other windows.
+- Added a check that virtualization is enabled in the BIOS.
+
+**Filesharing**
+
+- Fixed a bug when parent directories of shared folders are renamed, leading to spurious `File not found` errors. Fixes [docker/for-win#6200](https://github.com/docker/for-win/issues/6200).
+- Fixed bug where a letter and two digit root folder name causes Docker Compose to fail creating directories inside the volume. Fixes [docker/for-win#6248](https://github.com/docker/for-win/issues/6248).
+- Fixed a bug which prevented containers from seeing file updates on shared volumes, when under load and a container restarts. Fixes [docker/for-win#5530](https://github.com/docker/for-win/issues/5530#issuecomment-608804192)
+- Fixed a bug where host paths are incorrectly translated into VM paths. Fixes [docker/for-win#6209](https://github.com/docker/for-win/issues/6209).
+- Fixed bug receiving file events on long paths (> 260 characters). Fixes [docker/for-win#6337](https://github.com/docker/for-win/issues/6337).
+
+**Other fixes**
+
+- Fixed a bug where containers disappeared from the UI when Kubernetes context is invalid. Fixes [docker/for-win#6037](https://github.com/docker/for-win/issues/6037).
+- Fixed Windows event logs filtering when copying them to the Docker Desktop log files. Fixes [docker/for-win#6258](https://github.com/docker/for-win/issues/6258).
+- Fixed a handle leak in `vpnkit-bridge`. Fixed [docker/for-win#5841](https://github.com/docker/for-win/issues/5841)
+- Fixed a bug when removing Docker Desktop virtual switch.
+- Added a link to the Stable channel from the Docker Desktop UI.
+- IPv6 has been re-enabled in the embedded Linux kernel, so listening on IPv6 addresses works again. Fixed [docker/for-win#6206](https://github.com/docker/for-win/issues/6206) and [docker/for-mac#4415](https://github.com/docker/for-mac/issues/4415).
+- Made the embedded terminal resizable.
+- Fixed a bug which only respected the "expose on TCP" Docker engine API setting on application restart. Setting will now take effect when the Apply button is clicked.
+- Fixed a bug where diagnostic upload would fail if the username contained spaces.
+
+## Docker Desktop Community 2.2.3.0
+2020-04-02
+
+> [Download](https://download.docker.com/win/edge/43965/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- [Docker 19.03.8](https://github.com/docker/docker-ce/releases/tag/v19.03.8)
+- [Docker Compose 1.26.0-rc3](https://github.com/docker/compose/releases/tag/1.26.0-rc3)
+- [Linux 4.19.76](https://hub.docker.com/layers/docker/for-desktop-kernel/4.19.76-4e5d9e5f3bde0abf236f97e4a81b029ae0f5f6e7-amd64/images/sha256-11dc0f6ee3187088219ba1463ebb378f5093a7d98f176ddfd62dd6b741c2dd2d?context=repo)
+
+### New
+
+- Docker Desktop introduces a new onboarding tutorial upon first startup. The Quick Start tutorial guides users to get started with Docker in a few easy steps. It includes a simple exercise to build an example Docker image, run it as a container, push and save the image to Docker Hub.
+
+### Bug fixes and minor changes
+
+> Docker Desktop Edge 2.2.3.0 fixes 28 issues reported on the [docker/for-win](https://github.com/docker/for-win/issues) GitHub repository.
+
+**WSL 2**
+- Docker Desktop only exposes host ports in Linux if the Windows port is available.
+- Docker Desktop now allows users to refresh the list of Linux distros.
+- Docker Desktop defaults to WSL 2 on install on compatible OS versions.
+- Docker Desktop detects missing Linux kernel and adds a pointer to the Microsoft documentation to download the kernel.
+
+**File sharing**
+- Kubernetes: Persistent volumes created by claims are now stored in the virtual machine. Fixes [for-win/issues/5665](https://github.com/docker/for-win/issues/5665).
+- Docker Desktop ensures that host paths accessed by containers are within the shared folders list.
+- Fixed a bug where opening a read-only file would fail with an `Operation not permitted error`. Fixes [docker/for-win#6016](https://github.com/docker/for-win/issues/6016) and [docker/for-win#6017](https://github.com/docker/for-win/issues/6017).
+- Fixed path handling for `docker volume create -o type=none -o o=bind -o device=C:\Some\Windows\path`.
+- Fixed a bug which prevented open files from being deleted. Fixes [docker/for-win#5565](https://github.com/docker/for-win/issues/5565).
+- Docker Desktop now avoids locking files on the host which are open in containers.
+- Docker Desktop generates `fsnotify.WRITE` events in Linux containers when files are changed on the host. [docker/for-win#5530](https://github.com/docker/for-win/issues/5530#issuecomment-585572414)
+- Docker Desktop now displays hidden files on shared volumes. Fixes [docker/for-win#5808](https://github.com/docker/for-win/issues/5808).
+- Fixed cache invalidation and event injection for shared volumes with long paths.
+- Docker Desktop now handles case-insensitivity correctly during file creation.
+- Docker Desktop represents valid directory junctions as directories (rather than symlinks) and handles cache invalidation and event injection properly. Fixes [docker/for-win#5582](https://github.com/docker/for-win/issues/5582).
+- Fixed a race condition in `readlink` on shared volumes using "mfsymlinks". Fixes [docker/for-win#5793](https://github.com/docker/for-win/issues/5793)
+- Fixed a bug where files did not change in shared volumes when using `volumes_from` in docker-compose.yml. Fixes [docker/for-win#5530](https://github.com/docker/for-win/issues/5530).
+
+**Other fixes**
+- Reduced the size of the Docker Desktop installer from 960 MB to 400 MB.
+- Added an option to delete container and image data from the **Troubleshoot** screen.
+- Docker Desktop now reads the Hyper-V VM disk max size on startup and uses it as the value to display in the Settings.
+- Fixed the Hyper-V used disk image size being reported incorrectly.
+- Fixed the Hyper-V VM disk size increase. Fixes [docker/for-win#5881](https://github.com/docker/for-win/issues/5881).
+- Fixed container time drift when system hibernates. Fixes [docker/for-win#4526](https://github.com/docker/for-win/issues/4526).
+- Fixed a bug where the Docker Desktop UI could be started without the engine. Fixes [docker/for-win#5376](https://github.com/docker/for-win/issues/5376).
+- Docker Desktop now uses the least possible privilege for querying the `Server service`. Fixes [docker/for-win#5150](https://github.com/docker/for-win/issues/5150).
+- Fixed a bug where diagnostics upload could fail silently.
+- Capturing diagnostics is now faster and easier.
+- Fixed an issue where a container port could not be exposed on a specific host IP. See [docker/for-win#5546](https://github.com/docker/for-mac/issues/5546).
+- Removed port probing from dashboard, just unconditionally showing links to ports that should be available. Fixes [docker/for-win#5903](https://github.com/docker/for-win/issues/5903).
+
+### Known issues
+
+- Loopback and unspecified IPv6 addresses (`::` and `::1`) within a container do not currently work. Some web servers and other programs may be using these addresses in their configuration files.
+
+## Docker Desktop Community 2.2.2.0
+2020-03-02
+
+> [Download](https://download.docker.com/win/edge/43066/Docker%20Desktop%20Installer.exe)
+
+This release contains a Kubernetes upgrade. Note that your local Kubernetes cluster will be reset after installing Docker Desktop.
+
+### Upgrades
+
+- [Kubernetes 1.16.5](https://github.com/kubernetes/kubernetes/releases/tag/v1.16.5)
+- [Go 1.13.8](https://golang.org/doc/devel/release.html#go1.13)
+
+### New
+
+- Windows 10 Home users can now use Docker Desktop through the experimental WSL 2 support. This requires Windows Insider Preview Build 19018 or later.
+- Docker Desktop now allows sharing individual folders, rather than whole drives, giving more control to users over what is being shared.
+
+### Bug fixes and minor changes
+
+- Added a prerequisite check in the installer for the `LanmanServer` service. Fixes [docker/for-win#5150](https://github.com/docker/for-win/issues/5150).
+- DockerNAT has been removed from Docker Desktop as using an IP address to communicate from the host to a container is not a supported feature. To communicate from a container to the host, you must use the special DNS name `host.docker.internal`. We also recommend using ports to communicate from the host to a container. For more information, see [Networking](/docker-for-win/networking/#use-cases-and-workarounds).
+- Ceph support has been removed from Docker Desktop to save disk space.
+- Fixed an issue that caused the Windows log file archive to grow indefinitely. Fixes [docker/for-win#5113](https://github.com/docker/for-win/issues/5113).
+
+## Docker Desktop Community 2.2.1.0
+2020-02-12
+
+> [Download](https://download.docker.com/win/edge/42746/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- [Docker Compose 1.25.4](https://github.com/docker/compose/releases/tag/1.25.4)
+- [Go 1.12.16](https://golang.org/doc/devel/release.html#go1.12)
+
+### Bug fixes and minor changes
+
+- Fixed an issue that prevented users from creating files with special characters in the filenames within a shared volume. Fixes [docker/for-win#5520](https://github.com/docker/for-win/issues/5520).
+- Fixed handling of shared volumes with relative paths in `docker-compose.yml`. Fixes [docker/for-win#5516](https://github.com/docker/for-win/issues/5516).
+- Fixed handling of shared volumes where the path case (uppercase / lowercase) did not exactly match the host. Fixes [docker/for-win#5516](https://github.com/docker/for-win/issues/5516).
+- Fixed an issue where changing a file in the Windows file system did not update the file within the container. Fixes [docker/for-win#5530](https://github.com/docker/for-win/issues/5530), [docker/for-win#5550](https://github.com/docker/for-win/issues/5550), and [docker/for-win#5318](https://github.com/docker/for-win/issues/5318).
+- Fixed an issue that prevented users from sharing drives and sometimes incorrectly prompted users to enter file system credentials. Fixes [docker/for-win#5567](https://github.com/docker/for-win/issues/5567).
+- Fixed an issue which prevented users from mounting nested volumes. Fixes [docker/for-win#5540](https://github.com/docker/for-win/issues/5540).
+- Fixed a file synchronization issue on bind mounts. Fixes [docker/for-win#5533](https://github.com/docker/for-win/issues/5533).
+- Fixed an issue where timestamps were reset to zero on files within shared volumes. Fixes [docker/for-win#5528](https://github.com/docker/for-win/issues/5528) and [docker/for-win#5543](https://github.com/docker/for-win/issues/5543).
+- Fixed a bug which caused Docker Desktop to fail when sharing file paths longer than 260 characters. Fixes [docker/for-win#5572](https://github.com/docker/for-win/issues/5572).
+- Fixed an issue where some users were unable to start a container if there is a symlink in a shared volume. Fixes [docker/for-win#5582](https://github.com/docker/for-win/issues/5582).
+- Fixed a bug where users were unable to modify the **Manual proxy configuration** settings through the Docker Desktop UI. Fixes [docker/for-win#5606](https://github.com/docker/for-win/issues/5606) and [docker/for-win#5548](https://github.com/docker/for-win/issues/5548).
+- Fixed an issue where the Docker Desktop UI failed to start if the `no_proxy` environment variable has an entry that starts with a dot (.). Fixes [docker/for-win/5551](https://github.com/docker/for-win/issues/5551).
+- Fixed a bug that did not allow users to access the Docker Desktop UI on machines with a policy preventing access to the Windows registry. Fixes [docker/for-win#5536](https://github.com/docker/for-win/issues/5536).
+- Fixed an issue where disabling the WSL2 integration and re-enabling it later resulted in broken symlinks. Fixes [docker/for-win#5613](https://github.com/docker/for-win/issues/5613).
+- Fixed a race condition when starting the WSL engine which caused Docker Desktop to incorrectly report that the containers have exited. Fixes [docker/for-win#5607](https://github.com/docker/for-win/issues/5607).
+- Fixed an issue where editing code inside a container resulted in an error. Fixes [docker/for-win#5528](https://github.com/docker/for-win/issues/5528).
+- Fixed a bug where running the command `DockerCli.exe -SharedDrives` failed to display a list of drives that are shared. Fixes [docker/for-win#5625](https://github.com/docker/for-win/issues/5625).
+
+### Known issues
+
+- DockerNAT has been removed from Docker Desktop 2.2.0.0 as using an IP address to communicate from the host to a container is not a supported feature. To communicate from a container to the host, you must use the special DNS name `host.docker.internal`. We also recommend using ports to communicate from the host to a container. For more information, see [Networking](/docker-for-win/networking/#use-cases-and-workarounds).
+
+  However, if your current setup relies on IP addresses for communication, you can use a temporary workaround to reinstate DockerNAT. To do this, open
+`C:\Program Files\Docker\Docker\resources\MobyLinux.ps1` and add `$SwitchName = "DockerNAT"` between line 175 and 176. Note that the temporary workaround to reinstate DockerNAT may be removed from future releases.
+- Directory junctions in shared volumes pointing outside the shared volume do not work.
+- It is currently not possible to rename open files within shared volumes.
+- In some cases, Docker containers do not synchronize time with the host when the host machine is put to sleep.
+- It is not possible to use `localhost` in the proxy settings. You can instead use `host.docker.internal` to work around this issue.
+
+## Docker Desktop Community 2.1.7.0
+2019-12-11
+
+[Download](https://download.docker.com/win/edge/41561/Docker%20Desktop%20Installer.exe)
+
+> **Note:** Docker Desktop Edge 2.1.7.0 is the release candidate for the upcoming major Stable release. Please help us test this version before the wider release and report any issues in the [docker/for-win](https://github.com/docker/for-win/issues) GitHub repository.
+
+### Upgrades
+
+- [Docker Compose 1.25.1-rc1](https://github.com/docker/compose/releases/tag/1.25.1-rc1)
+
+### New
+
+- Added the **WSL Integration** option in **Settings** > **Resources** to select WSL 2 distributions. This option will be visible only after enabling WSL 2 on your machine.
+- File sharing: The new gRPC FUSE system is no longer experimental and is enabled by default even when experimental features are turned off.
+
+### Bug fixes and minor changes
+
+- The Docker Desktop Dashboard now displays port information inline with the container status.
+- Fixed an issue which caused the 'back' button on the Dashboard UI to behave inconsistently when repeatedly switching between container details and the Settings window.
+- Various minor improvements to the Dashboard UI.
+- Fixed a bug that caused a rare crash when uninstalling Docker Desktop.
+- Fixed an issue when overwriting existing files with the WSL 2 CLI bundle, such as kubectl.
+- Fixed an issue where WSL 2 failed to start when the distribution directory is compressed or encrypted. Fixes [docker/for-win#5256](https://github.com/docker/for-win/issues/5256).
+- Fixed an issue that caused Docker Desktop to fail on startup when there is an incomplete Kubernetes config file.
+- Fixed various stability issues.
+
+### Known issues
+
+- The Dashboard stops updating when you switch the container mode between Linux and Windows. To work around this issue, close and reopen the Dashboard.
+- The new gRPC FUSE file sharing implementation does not support connecting to new drives after Docker Desktop starts (for example, a USB drive). If you would like to share the new drive in Docker Desktop, you must quit Docker Desktop and then start the application to refresh the list of drives in Settings.
+
+## Docker Desktop Community 2.1.6.1
+2019-11-20
+
+[Download](https://download.docker.com/win/edge/40920/Docker%20Desktop%20Installer.exe)
+
+### Bug fixes and minor changes
+
+- Fixed an issue that prevented Kubernetes to start with WSL 2 on machines with multiple CPU cores.
+- Fixed a rare issue that caused to Docker Desktop to crash with the error `Unable to stop Hyper-V VM: Cannot validate argument on parameter 'SwitchName'. The argument is null or empty.`
+
+### Known issue
+
+Windows Insider Preview Slow Ring users running OS builds older than 19025 cannot run WSL 2 following upgrade to Docker Desktop Edge 2.1.6.1. WSL 2 requires Windows 10 Insider Preview build 19018 or greater.
+
+### Docker Desktop Community 2.1.6.0
+2019-11-18
+
+[Download](https://download.docker.com/win/edge/40807/Docker%20Desktop%20Installer.exe)
+
+### Upgrades
+
+- [Docker 19.03.5](https://github.com/docker/docker-ce/releases/tag/v19.03.5)
+- [Go 1.12.13](https://golang.org/doc/devel/release.html#go1.12)
+
+### New
+
+Added the ability to start and stop Compose-based applications and view combined logs in the Docker Desktop **Dashboard** UI.
+
+### Bug fixes and minor changes
+
+- Docker Desktop now automatically restarts after an update.
+- Fixed an issue where Docker Desktop auto-start was not being disabled properly on some machines.
+- Fixed a container start error when a container has more than one port with an arbitrary or not-yet-configured external port number. For example, `docker run -p 80 -p 443 nginx`). Fixes [docker/for-win#4935](https://github.com/docker/for-win/issues/4935) and [docker/compose#6998](https://github.com/docker/compose/issues/6998).
+- Fixed an issue which caused Docker Desktop to crash when resetting to factory defaults while running Windows containers.
+- Fixed multiple issues related to Fast Startup.
+- Injected Docker CLI, CLI plugins, Docker Compose, Notary, and kubectl into WSL distros when Docker Desktop WSL integration is enabled.
+- Fixed an issue where bind mounts created with Docker Compose from a WSL distro were incorrectly translated. Fixes [docker/for-win#5084](https://github.com/docker/for-win/issues/5084).
+- Docker Desktop now supports inotify events on shared filesystems for Windows file sharing.
+- Fixed a cache invalidation bug when a file in a shared volume is renamed on the host for Windows file sharing.
+- Fixed a handle leak when calling `Mknod` on a shared volume for Windows file sharing.
+- To make VM startup more reliable, Docker Desktop now avoids adding a Hyper-V NIC to the Windows VM when using Hypervisor sockets for Windows file sharing (rather than Samba).
+
+### Known issue
+
+Windows Insider Preview Slow Ring users running OS builds older than 19025 cannot run WSL 2 following upgrade to Docker Desktop Edge 2.1.6.0. WSL 2 requires Windows 10 Insider Preview build 19018 or greater.
+
+## Docker Desktop Community 2.1.5.0
 2019-11-04
 
 [Download](https://download.docker.com/win/edge/40323/Docker%20Desktop%20Installer.exe)
@@ -31,7 +423,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 
   To access the Dashboard UI, select the Docker menu from the system tray and then click **Dashboard**.
 
-- **WSL 2 backend:** The new Docker Desktop WSL 2 backend replaces the Docker Desktop WSL 2 Tech Preview. The WSL 2 backend architecture introduces support for Kubernetes, provides an updated Docker daemon, offers VPN-friendly networking, and additional features. For more information, see [Docker Desktop WSL 2 backend](https://engineering.docker.com/2019/10/new-docker-desktop-wsl2-backend/).
+- **WSL 2 backend:** The new Docker Desktop WSL 2 backend replaces the Docker Desktop WSL 2 Tech Preview. The WSL 2 backend architecture introduces support for Kubernetes, provides an updated Docker daemon, offers VPN-friendly networking, and additional features. For more information, see [Docker Desktop WSL 2 backend](https://docs.docker.com/docker-for-windows/wsl/).
 
 - **New file sharing implementation:** Docker Desktop introduces a new file sharing implementation which uses gRPC, FUSE, and Hypervisor sockets instead of Samba, CIFS, and Hyper-V networking. The new implementation  offers improved I/O performance. Additionally, when using the new file system:
 
@@ -48,7 +440,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 
 - When you deploy a Docker App with multiple containers on Kubernetes, Docker Desktop displays each Pod as an application on the Dashboard.
 
-### Docker Desktop Community 2.1.4.0
+## Docker Desktop Community 2.1.4.0
 2019-10-15
 
 [Download](https://download.docker.com/win/edge/39357/Docker%20Desktop%20Installer.exe)
@@ -64,8 +456,9 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 
 - Improved the navigation in **Settings** and **Troubleshoot** UI.
 - Fixed a bug that prevented users from accessing WSL 2 Tech Preview. Fixes [docker/for-win#4734](https://github.com/docker/for-win/issues/4734).
+- Docker Machine is no longer included in the Docker Desktop installer. You can download it separately from the [Docker Machine releases](https://github.com/docker/machine/releases) page.
 
-### Docker Desktop Community 2.1.3.0
+## Docker Desktop Community 2.1.3.0
 2019-09-16
 
 [Download](https://download.docker.com/win/edge/38275/Docker%20Desktop%20Installer.exe)
@@ -75,7 +468,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 - Added a loading overlay to the **Settings** and **Troubleshoot** windows to prevent editing conflicts.
 - Deactivated the **Reset Kubernetes** button when Kubernetes is not activated.
 
-### Docker Desktop Community 2.1.2.0
+## Docker Desktop Community 2.1.2.0
 2019-09-09
 
 [Download](https://download.docker.com/win/edge/38030/Docker%20Desktop%20Installer.exe)
@@ -94,7 +487,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 - Reduced the Virtual Machine (VM) startup time.
 - Added support for `Expect: 100-continue` headers in the Docker API proxy. Some HTTP clients such as `curl` send this header when the payload is large, for example, when creating containers. Fixes [moby/moby#39693](https://github.com/moby/moby/issues/39693).
 
-### Docker Desktop Community 2.1.1.0
+## Docker Desktop Community 2.1.1.0
 2019-08-12
 
 [Download](https://download.docker.com/win/edge/37260/Docker%20Desktop%20Installer.exe)
@@ -105,7 +498,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 
 #### New
 
-- [Docker Desktop WSL 2 Tech Preview](https://docs.docker.com/docker-for-windows/wsl-tech-preview/)
+- [Docker Desktop WSL 2 Tech Preview](https://docs.docker.com/docker-for-windows/wsl/)
 
 #### Bug fixes and minor changes
 
@@ -116,7 +509,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 - Docker Desktop now supports a configurable user timeout for VMs on slower machines. [docker/for-win#4393](https://github.com/docker/for-win/issues/4393)
 - Enabled Windows features such as Hyper-V and Containers during installation, thereby reducing the need for another restart after installation.
 
-### Docker Desktop Community 2.1.0.0 
+## Docker Desktop Community 2.1.0.0 
 2019-07-30
 
 [Download](https://download.docker.com/win/edge/36873/Docker%20Desktop%20Installer.exe)
@@ -148,7 +541,7 @@ This release contains Kubernetes security improvements. Note that your local Kub
  - Fixed a bug where the process output was not redirected to stdout when gathering diagnostics on Windows, which sometimes resulted in    a crash.
 
 
-### Docker Community Edition 2.0.5.0 2019-06-12
+## Docker Community Edition 2.0.5.0 2019-06-12
 
 [Download](https://download.docker.com/win/edge/35318/Docker%20Desktop%20Installer.exe)
 
@@ -181,14 +574,14 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 * Known issues
   - Windows containers networking does not work properly on Windows 1903.
 
-### Docker Community Edition 2.0.4.1 2019-05-07
+## Docker Community Edition 2.0.4.1 2019-05-07
 
 [Download](https://download.docker.com/win/edge/34207/Docker%20Desktop%20Installer.exe)
 
 * Bug fixes and minor changes
   - Upgrade QEMU from 2.8.0 to 3.1.0 to fix an emulation issue when building and running Java applications on Arm64 devices.
 
-### Docker Community Edition 2.0.4.0 2019-04-30
+## Docker Community Edition 2.0.4.0 2019-04-30
 
 [Download](https://download.docker.com/win/edge/33772/Docker%20Desktop%20Installer.exe)
 
@@ -223,7 +616,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
   - Fix `Delete` of persistent volume claims
   - Truncate UDP DNS responses which are over 512 bytes in size
 
-### Docker Community Edition 2.0.3.0 2019-03-05
+## Docker Community Edition 2.0.3.0 2019-03-05
 
 [Download](https://download.docker.com/win/edge/31778/Docker%20Desktop%20Installer.exe)
 
@@ -235,14 +628,14 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
   - Fixed port 8080 that was used on localhost when starting Kubernetes.
   - Fixed "create issue" link in diagnostics windows.
 
-### Docker Community Edition 2.0.2.1 2019-02-15
+## Docker Community Edition 2.0.2.1 2019-02-15
 
 [Download](https://download.docker.com/win/edge/31274/Docker%20Desktop%20Installer.exe)
 
 * Upgrades
   - [Docker 18.09.2](https://github.com/docker/docker-ce/releases/tag/v18.09.2), fixes [CVE-2019-5736](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-5736)
 
-### Docker Community Edition 2.0.2.0 2019-02-06
+## Docker Community Edition 2.0.2.0 2019-02-06
 
 [Download](https://download.docker.com/win/edge/30972/Docker%20Desktop%20Installer.exe)
 
@@ -257,7 +650,7 @@ This release contains a Kubernetes upgrade. Note that your local Kubernetes clus
 * Bug fixes and minor changes
   - Kubernetes: use default maximum number of pods for kubelet. [docker/for-mac#3453](https://github.com/docker/for-mac/issues/3453)
 
-### Docker Community Edition 2.0.1.0 2019-01-11
+## Docker Community Edition 2.0.1.0 2019-01-11
 
 [Download](https://download.docker.com/win/edge/30090/Docker%20Desktop%20Installer.exe)
 
@@ -1168,10 +1561,9 @@ registry access (fixes [docker/for-win#569](https://github.com/docker/for-win/is
 
 **New**
 
-- Windows containers settings panel and options are working. In previous releases, settings were not implemented for [Windows containers
-mode](index.md#switch-between-windows-and-linux-containers-beta-feature). (See
-[About the Docker Windows containers specific
-dialogs](index.md#about-the-docker-windows-containers-specific-dialogs).)
+- Windows containers settings panel and options are working. In previous releases, settings were not implemented for
+[Windows containers mode](index.md#switch-between-windows-and-linux-containers). (See
+[About the Docker Windows containers specific dialogs](index.md#about-the-docker-windows-containers-specific-dialogs).)
 - Windows containers: Restart from the settings panel works
 - Windows containers: Factory default
 - Windows containers: `Daemon.json` can be modified

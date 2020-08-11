@@ -1,6 +1,6 @@
 ---
 description: Getting Started
-keywords: mac, edge, tutorial
+keywords: mac, tutorial, run, docker, local, machine
 redirect_from:
 - /mackit/
 - /mackit/getting-started/
@@ -12,19 +12,21 @@ redirect_from:
 - /docker-for-mac/index/
 - /docker-for-mac/osx/
 title: Get started with Docker Desktop for Mac
+toc_min: 1
+toc_max: 2
 ---
 
 Welcome to Docker Desktop!
 
-The _Docker Desktop for Mac_ section contains information about the Docker Desktop Community Stable release. For information about features available in Edge releases, see the [Edge release notes](edge-release-notes/). For information about Docker Desktop Enterprise (DDE) releases, see [Docker Desktop Enterprise](/ee/desktop/).
+The _Docker Desktop for Mac_ section contains information about the Docker Desktop Community Stable release. For information about features available in Edge releases, see the [Edge release notes](edge-release-notes/). For information about Docker Desktop Enterprise (DDE) releases, see [Docker Desktop Enterprise](/desktop/enterprise/).
 
-Docker is a full development platform for creating containerized applications. Docker Desktop is the best way to get started with Docker on Mac.
+Docker is a full development platform to build, run, and share containerized applications. Docker Desktop is the best way to get started with Docker on Mac.
 
 See [Install Docker Desktop](install.md){: target="_blank" class="_"} for download information, system requirements, and installation instructions.
 
 ## Check versions
 
-Ensure your versions of `docker`, `docker-compose`, and `docker-machine` are
+Ensure your versions of `docker` and `docker-compose` are
 up-to-date and compatible with `Docker.app`. Your output may differ if you are
 running different versions.
 
@@ -101,7 +103,7 @@ menu bar and configure the runtime options described below.
 
 ### General
 
-![Preferences](images/menu/prefs-general.png)
+![Preferences](images/menu/prefs-general.png){:width="750px"}
 
 On the **General** tab, you can configure when to start and update Docker:
 
@@ -115,6 +117,8 @@ On the **General** tab, you can configure when to start and update Docker:
 
 - **Send usage statistics**: Docker Desktop sends diagnostics, crash reports, and usage data. This information helps Docker improve and troubleshoot the application. Clear the check box to opt out.
 
+  Click **Switch to the Edge version** to learn more about Docker Desktop Edge releases.
+
 ### Resources
 
 The **Resources** tab allows you to configure CPU, memory, disk, proxies, network, and other resources.
@@ -124,7 +128,7 @@ The **Resources** tab allows you to configure CPU, memory, disk, proxies, networ
 On the Advanced tab, you can limit resources available to Docker.
 
 ![Advanced Preference
-settings-advanced](images/menu/prefs-advanced.png)
+settings-advanced](images/menu/prefs-advanced.png){:width="750px"}
 
 Advanced settings are:
 
@@ -145,9 +149,11 @@ You can also move the disk image to a different location. If you attempt to move
 
 #### File sharing
 
-Choose the local directories you'd like to share with your containers. File sharing is required for volume mounting if the project lives outside of the `/Users` directory. In that case, share the drive where the Dockerfile and volume are located. Otherwise, you get `file not found` or `cannot start service` errors at runtime`.
-
-![File Sharing](images/menu/prefs-fileshare.png)
+Use File sharing to allow local directories on the Mac to be shared with Linux containers.
+This is especially useful for
+editing source code in an IDE on the host while running and testing the code in a container.
+By default the `/Users`, `/Volume`, `/private`, `/tmp` and `/var/folders` directory are shared. If your project is outside this directory then it must be added
+to the list. Otherwise you may get `Mounts denied` or `cannot start service` errors at runtime.
 
 File share settings are:
 
@@ -158,58 +164,48 @@ File share settings are:
 
   There are some limitations on the directories that can be shared:
 
-  - It is not possible to share a directory that is a subdirectory of an already shared directory.
   - The directory must not exist inside of Docker.
 
 For more information, see:
 
 - [Namespaces](osxfs.md#namespaces){: target="_blank" class="_"} in the topic on
   [osxfs file system sharing](osxfs.md).
-- [Volume mounting requires file sharing for any project directories outside of
-  `/Users`](troubleshoot.md#volume-mounting-requires-file-sharing-for-any-project-directories-outside-of-users).)
+- [Volume mounting requires file sharing for any project directories outside of `/Users`](troubleshoot.md#volume-mounting-requires-file-sharing-for-any-project-directories-outside-of-users).)
 
 #### Proxies
 
 Docker Desktop detects HTTP/HTTPS Proxy Settings from macOS and automatically
-propagates these to Docker and to your containers. For example, if you set your
+propagates these to Docker. For example, if you set your
 proxy settings to `http://proxy.example.com`, Docker uses this proxy when
 pulling containers.
 
-![Proxies settings](images/menu/prefs-proxies.png)
-
-When you start a container, your proxy settings propagate into the containers.
-For example:
+Your proxy settings, however, will not be propagated into the containers you start.
+If you wish to set the proxy settings for your containers, you need to define
+environment variables for them, just like you would do on Linux, for example:
 
 ```
-$ docker run -it alpine env
+$ docker run -e HTTP_PROXY=http://proxy.example.com:3128 alpine env
+
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=b7edf988b2b5
 TERM=xterm
 HOME=/root
 HTTP_PROXY=http://proxy.example.com:3128
-http_proxy=http://proxy.example.com:3128
-no_proxy=*.local, 169.254/16
 ```
 
-You can see from the above output that the `HTTP_PROXY`, `http_proxy`, and
-`no_proxy` environment variables are set. When your proxy configuration changes,
-Docker restarts automatically to pick up the new settings. If you have any
-containers that you would like to keep running across restarts, you should consider using [restart policies](/engine/reference/run/#restart-policies-restart).
+For more information on setting environment variables for running containers,
+see [Set environment variables](/engine/reference/commandline/run/#set-environment-variables--e---env---env-file).
 
 #### Network
 
 You can configure Docker Desktop networking to work on a virtual private network (VPN). Specify a network address translation (NAT) prefix and subnet mask to enable Internet connectivity.
 
-![Network settings](images/menu/prefs-network.png)
-
 ### Docker Engine
 
 The Docker Engine page allows you to configure the Docker daemon to determine how your containers run.
 
-![Daemon](images/menu/engine.png)
-
-Type a JSON configuration file in the box to configure the daemon settings. For a full list of options, see the Docker Engine [dockerd commandline
-reference](/engine/reference/commandline/dockerd.md){:target="_blank"
+Type a JSON configuration file in the box to configure the daemon settings. For a full list of options, see the Docker Engine
+[dockerd commandline reference](/engine/reference/commandline/dockerd/){:target="_blank"
 class="_"}.
 
 Click **Apply & Restart** to save your settings and restart Docker Desktop.
@@ -217,8 +213,6 @@ Click **Apply & Restart** to save your settings and restart Docker Desktop.
 ### Command Line
 
 On the Command Line page, you can specify whether or not to enable experimental features.
-
-![Command Line](images/menu/command-line.png)
 
 {% include experimental.md %}
 
@@ -268,7 +262,7 @@ that you can test deploying your Docker workloads on Kubernetes.
 The Kubernetes client command, `kubectl`, is included and configured to connect
 to the local Kubernetes server. If you have `kubectl` already installed and
 pointing to some other environment, such as `minikube` or a GKE cluster, be sure
-to change context so that `kubectl` is pointing to `docker-for-desktop`:
+to change context so that `kubectl` is pointing to `docker-desktop`:
 
 ```bash
 $ kubectl config get-contexts
@@ -280,17 +274,15 @@ experience conflicts, remove `/usr/local/bin/kubectl`.
 
 - To enable Kubernetes support and install a standalone instance of Kubernetes
   running as a Docker container, select **Enable Kubernetes**. To set Kubernetes as the
-  [default orchestrator](/docker-for-mac/kubernetes/#override-the-default-orchestrator), select **Deploy Docker Stacks to Kubernetes by default**.
+  [default orchestrator](kubernetes.md#override-the-default-orchestrator), select **Deploy Docker Stacks to Kubernetes by default**.
 
    Click **Apply & Restart** to save the settings. This instantiates images required to run the Kubernetes server as containers, and installs the
   `/usr/local/bin/kubectl` command on your Mac.
 
-  ![Enable Kubernetes](images/kubernetes/kube.png)
+  ![Enable Kubernetes](images/kubernetes/kube.png){:width="750px"}
 
   When Kubernetes is enabled and running, an additional status bar item displays
-  at the bottom right of the Docker Desktop Preferences dialog.
-
-  ![Installation complete](images/kubernetes/kube-running.png)
+  at the bottom right of the Docker Desktop Settings dialog.
 
   The status of Kubernetes shows in the Docker menu and the context points to
   `docker-desktop`.
@@ -317,6 +309,10 @@ experience conflicts, remove `/usr/local/bin/kubectl`.
 > On Docker Desktop Mac, the **Restart Docker Desktop**, **Reset to factory defaults**, and other reset options are available from the **Troubleshoot** menu.
 
 For information about the reset options, see [Logs and Troubleshooting](troubleshoot.md).
+
+## Dashboard
+
+The Docker Desktop Dashboard enables you to interact with containers and applications and manage the lifecycle of your applications directly from your machine. The Dashboard UI shows all running, stopped, and started containers with their state. It provides an intuitive interface to perform common actions to inspect and manage containers and existing Docker Compose applications. For more information, see [Docker Desktop Dashboard](../desktop/dashboard.md).
 
 ## Add TLS certificates
 
@@ -373,7 +369,7 @@ Desktop `xhyve` virtual machine).
 >   effect.
 >
 > * The registry cannot be listed as an _insecure registry_ (see [Docker
->   Daemon](index.md#docker-daemon)). Docker Desktop ignores certificates listed
+>   Engine](#docker-engine). Docker Desktop ignores certificates listed
 >   under insecure registries, and does not send client certificates. Commands
 >   like `docker run` that attempt to pull from the registry produce error
 >   messages on the command line, as well as on the registry.
@@ -414,14 +410,13 @@ also in your keychain.
 ```
 
 To learn more about how to install a CA root certificate for the registry and
-how to set the client TLS certificate for verification, see [Verify repository
-client with certificates](/engine/security/certificates.md) in the Docker Engine
-topics.
+how to set the client TLS certificate for verification, see
+[Verify repository client with certificates](../engine/security/certificates.md)
+in the Docker Engine topics.
 
 ## Install shell completion
 
-Docker Desktop comes with scripts to enable completion for the `docker`,
-`docker-machine`, and `docker-compose` commands. The completion scripts may be
+Docker Desktop comes with scripts to enable completion for the `docker` and `docker-compose` commands. The completion scripts may be
 found inside `Docker.app`, in the `Contents/Resources/etc/` directory and can be
 installed both in Bash and Zsh.
 
@@ -436,12 +431,10 @@ installed bash via [Homebrew](http://brew.sh/):
 ```bash
 etc=/Applications/Docker.app/Contents/Resources/etc
 ln -s $etc/docker.bash-completion $(brew --prefix)/etc/bash_completion.d/docker
-ln -s $etc/docker-machine.bash-completion $(brew --prefix)/etc/bash_completion.d/docker-machine
 ln -s $etc/docker-compose.bash-completion $(brew --prefix)/etc/bash_completion.d/docker-compose
 ```
 
 Add the following to your `~/.bash_profile`:
-
 
 ```shell
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
@@ -466,8 +459,28 @@ directory. For example, if you installed Zsh via [Homebrew](http://brew.sh/):
 ```bash
 etc=/Applications/Docker.app/Contents/Resources/etc
 ln -s $etc/docker.zsh-completion /usr/local/share/zsh/site-functions/_docker
-ln -s $etc/docker-machine.zsh-completion /usr/local/share/zsh/site-functions/_docker-machine
 ln -s $etc/docker-compose.zsh-completion /usr/local/share/zsh/site-functions/_docker-compose
+```
+
+### Fish-Shell
+
+Fish-shell also supports tab completion [completion
+system](https://fishshell.com/docs/current/#tab-completion){:target="_blank"
+class="_"}. To activate completion for Docker commands,
+these files need to be copied or symlinked to your Fish-shell `completions/`
+directory.
+
+Create the `completions` directory:
+
+```bash
+mkdir -p ~/.config/fish/completions
+```
+
+Now add fish completions from docker.
+
+```bash
+ln -shi /Applications/Docker.app/Contents/Resources/etc/docker.fish-completion ~/.config/fish/completions/docker.fish
+ln -shi /Applications/Docker.app/Contents/Resources/etc/docker-compose.fish-completion ~/.config/fish/completions/docker-compose.fish
 ```
 
 ## Give feedback and get help
@@ -478,8 +491,8 @@ forum](https://forums.docker.com/c/docker-for-mac){:target="_blank" class="_"}.
 
 To report bugs or problems, log on to Docker Desktop [for Mac issues on
 GitHub](https://github.com/docker/for-mac/issues){:target="_blank" class="_"},
-where you can review community reported issues, and file new ones.  See [Logs
-and Troubleshooting](troubleshoot.md) for more details.
+where you can review community reported issues, and file new ones.  See
+[Logs and Troubleshooting](troubleshoot.md) for more details.
 
 For information about providing feedback on the documentation or update it yourself, see [Contribute to documentation](/opensource/).
 
@@ -487,12 +500,11 @@ For information about providing feedback on the documentation or update it yours
 
 Select **Sign in /Create Docker ID** from the Docker Desktop menu to access your [Docker Hub](https://hub.docker.com/){: target="_blank" class="_" } account. Once logged in, you can access your Docker Hub repositories and organizations directly from the Docker Desktop menu.
 
-For more information, refer to the following [Docker Hub topics](/docker-hub/index.md){:target="_blank"
+For more information, refer to the following [Docker Hub topics](../docker-hub/index.md){:target="_blank"
 class="_"}:
 
-* [Organizations and Teams in Docker
-  Hub](/docker-cloud/orgs/index.md){:target="_blank" class="_"}
-* [Builds](/docker-hub/builds/index.md){:target="_blank" class="_"}
+* [Organizations and Teams in Docker Hub](../docker-hub/orgs.md){:target="_blank" class="_"}
+* [Builds](../docker-hub/builds/index.md){:target="_blank" class="_"}
 
 ### Two-factor authentication
 
@@ -520,8 +532,8 @@ After you have successfully authenticated, you can access your organizations and
 * Dig in deeper with [Docker Labs](https://github.com/docker/labs/) example
   walkthroughs and source code.
 
-* For a summary of Docker command line interface (CLI) commands, see [Docker CLI
-  Reference Guide](/engine/api.md){: target="_blank" class="_"}.
+* For a summary of Docker command line interface (CLI) commands, see
+  [Docker CLI Reference Guide](../engine/api/index.md){: target="_blank" class="_"}.
 
 * Check out the blog post, [What’s New in Docker 17.06 Community Edition
   (CE)](https://blog.docker.com/2017/07/whats-new-docker-17-06-community-edition-ce/){:

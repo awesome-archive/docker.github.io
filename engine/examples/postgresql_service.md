@@ -16,7 +16,7 @@ This PostgreSQL setup is for development-only purposes. Refer to the
 PostgreSQL documentation to fine-tune these settings so that it is
 suitably secure.
 
-```conf
+```dockerfile
 #
 # example Dockerfile for https://docs.docker.com/engine/examples/postgresql_service/
 #
@@ -28,7 +28,7 @@ FROM ubuntu:16.04
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
 # Add PostgreSQL's repository. It contains the most recent stable release
-#     of PostgreSQL, ``9.3``.
+#  of PostgreSQL.
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 # Install ``python-software-properties``, ``software-properties-common`` and PostgreSQL 9.3
@@ -79,9 +79,9 @@ Run the PostgreSQL server container (in the foreground):
 $ docker run --rm -P --name pg_test eg_postgresql
 ```
 
-There are two ways to connect to the PostgreSQL server. We can use [*Link
-Containers*](../userguide/networking/default_network/dockerlinks.md), or we can access it from our host
-(or the network).
+There are two ways to connect to the PostgreSQL server. We can use
+[*Link Containers*](../../network/links.md),
+or we can access it from our host (or the network).
 
 > **Note**: The `--rm` removes the container and its image when
 the container exits successfully.
@@ -89,7 +89,7 @@ the container exits successfully.
 ### Use container linking
 
 Containers can be linked to another container's ports directly using
-`-link remote_name:local_alias` in the client's
+`--link remote_name:local_alias` in the client's
 `docker run`. This sets a number of environment
 variables that can then be used to connect:
 

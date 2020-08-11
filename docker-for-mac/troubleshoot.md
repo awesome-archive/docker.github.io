@@ -8,23 +8,20 @@ title: Logs and troubleshooting
 
 This page contains information on how to diagnose and troubleshoot Docker Desktop issues, send logs and communicate with the Docker Desktop team, use our forums and Success Center, browse and log issues on GitHub, and find workarounds for known problems.
 
-## Docker Success Center
-
-**Looking for help with Docker Desktop on Mac?** Check out the [Docker Success Center](http://success.docker.com/) for knowledge base articles, FAQs, and
-technical support for various subscription levels.
-
 ## Troubleshoot
 
 Choose ![whale menu](images/whale-x.png){: .inline} > **Troubleshoot**
 from the menu bar to see the troubleshoot options.
 
-![Uninstall or reset Docker](images/menu/troubleshoot.png){: .with-border}
+![Uninstall or reset Docker](images/menu/troubleshoot.png){:width="750px"}
 
 The Troubleshoot page contains the following options:
 
 * **Restart Docker Desktop**: Select to restart Docker Desktop.
 
 * **Run Diagnostics**: Select this option to diagnose any issues on Docker Desktop. For detailed information about diagnostics, see [Diagnose problems, send feedback, and create GitHub issues](#diagnose-problems-send-feedback-and-create-github-issues).
+
+* **Reset Kubernetes cluster**: Select this option to delete all stacks and Kubernetes resources. For more information, see [Kubernetes](/docker-for-mac/index/#kubernetes).
 
 * **Reset disk image**: This option resets all Docker data _without_ a
 reset to factory defaults. Selecting this option results in the loss of existing settings.
@@ -65,11 +62,9 @@ Choose ![whale menu](images/whale-x.png){: .inline} > **Troubleshoot** > **Run D
 Once the diagnostics are available, you can upload them and obtain a
 **Diagnostic ID**, which must be provided when communicating with the Docker
 team. For more information on our policy regarding personal data, see
-[how is personal data handled in Docker
-Desktop](https://docs.docker.com/docker-for-mac/faqs/#how-is-personal-data-handled-in-docker-desktop).
+[how is personal data handled in Docker Desktop](faqs.md#how-is-personal-data-handled-in-docker-desktop).
 
-![Diagnostics & Feedback with
-ID](images/diagnose-feedback-id.png){:width="600px"}
+![Diagnostics & Feedback with ID](images/diagnose-feedback-id.png){:width="600px"}
 
 If you click **Report an issue**, this opens Docker Desktop [for Mac](https://github.com/docker/for-mac/issues/) issues on GitHub in your web browser in a "New issue" template. Add the details before submitting the issue. Do not forget to copy/paste your diagnostic ID.
 
@@ -112,8 +107,8 @@ $ open /tmp/BE9AFAAF-F68B-41D0-9D12-84760E6B8740/20190905152051.zip
 
 In addition to using the diagnose and feedback option to submit logs, you can
 browse the logs yourself.  The following documentation is about macOS 10.12
-onwards; for older versions, see [older
-documentation](v17.12/docker-for-mac/troubleshoot/#logs).
+onwards; for older versions, see
+[older documentation](https://github.com/docker/docker.github.io/blob/v17.12/docker-for-mac/troubleshoot.md#check-the-logs).
 
 #### In a terminal
 
@@ -166,20 +161,20 @@ As well as on the registry. For example:
 2019/06/20 18:15:30 http: TLS handshake error from 192.168.203.139:52883: tls: first record does not look like a TLS handshake
 ```
 
-For more about using client and server side certificates, see [Adding TLS
-certificates](index.md#adding-tls-certificates) in the Getting Started topic.
+For more about using client and server side certificates, see
+[Adding TLS certificates](index.md#add-tls-certificates) in the Getting Started topic.
 
 ### Docker Desktop does not start if Mac user account and home folder are renamed after installing the app
 
-See [Do I need to reinstall Docker Desktop if I change the name of my macOS
-account?](faqs.md#do-i-need-to-reinstall-docker-for-mac-if-i-change-the-name-of-my-macos-account)
+See
+[Do I need to reinstall Docker Desktop if I change the name of my macOS account?](faqs.md#do-i-need-to-reinstall-docker-for-mac-if-i-change-the-name-of-my-macos-account)
 in the FAQs.
 
 ### Volume mounting requires file sharing for any project directories outside of `/Users`
 
 If you are using mounted volumes and get runtime errors indicating an
 application file is not found, access to a volume mount is denied, or a service
-cannot start, such as when using [Docker Compose](/compose/gettingstarted.md),
+cannot start, such as when using [Docker Compose](../compose/gettingstarted.md),
 you might need to enable [file sharing](index.md#file-sharing).
 
 Volume mounting requires shared drives for projects that live outside of the
@@ -232,8 +227,8 @@ in the Apple documentation, and Docker Desktop [Mac system requirements](install
   * If you use bash, use the following command: `unset ${!DOCKER_*}`
 
   * For other shells, unset each environment variable individually as described
-    in [Setting up to run Docker Desktop on
-    Mac](docker-toolbox.md#setting-up-to-run-docker-desktop-on-mac) in [Docker Desktop on Mac vs. Docker Toolbox](docker-toolbox.md).
+    in [Setting up to run Docker Desktop on Mac](docker-toolbox.md#setting-up-to-run-docker-desktop-on-mac)
+    in [Docker Desktop on Mac vs. Docker Toolbox](docker-toolbox.md).
 
 * Network connections fail if the macOS Firewall is set to "Block all incoming
   connections". You can enable the firewall, but `bootpd` must be allowed
@@ -259,17 +254,6 @@ in the Apple documentation, and Docker Desktop [Mac system requirements](install
 
 * IPv6 is not (yet) supported on Docker Desktop.
 
-  A workaround is provided that auto-filters out the IPv6 addresses in DNS
-  server lists and enables successful network access.  For example,
-  `2001:4860:4860::8888` would become `8.8.8.8`.  To learn more, see these
-  issues on GitHub and Docker Desktop forums:
-
-  * [Network timeout when top two DNS servers in /etc/resolv.conf are IPv6
-    addresses](https://github.com/docker/for-mac/issues/9)
-
-  * [ERROR: Network timed out while trying to connect to
-    index.docker.io](https://forums.docker.com/t/error-network-timed-out-while-trying-to-connect-to-index-docker-io/17206)
-
 * You might encounter errors when using `docker-compose up` with Docker Desktop
   (`ValueError: Extra Data`). We've identified this is likely related to data
   and/or events being passed all at once rather than one by one, so sometimes
@@ -280,8 +264,8 @@ in the Apple documentation, and Docker Desktop [Mac system requirements](install
   the Activity Monitor, and for some processes to consume a large amount of CPU
   resources. Reboot and restart Docker to resolve these issues.
 
-* Docker does not auto-start on login even when it is enabled in ![whale
-  menu](images/whale-x.png){: .inline} > **Preferences**. This is related to a
+* Docker does not auto-start on login even when it is enabled in
+  ![whale menu](images/whale-x.png){: .inline} > **Preferences**. This is related to a
   set of issues with Docker helper, registration, and versioning.
 
 * Docker Desktop uses the `HyperKit` hypervisor
@@ -338,8 +322,8 @@ in the Apple documentation, and Docker Desktop [Mac system requirements](install
   outside of `osxfs` mounts, and use third-party tools like Unison or `rsync` to
   synchronize between container directories and bind-mounted directories. We are
   actively working on `osxfs` performance using a number of different
-  techniques.  To learn more, see the topic on [Performance issues, solutions,
-  and roadmap](osxfs.md#performance-issues-solutions-and-roadmap).
+  techniques.  To learn more, see the topic on
+  [Performance issues, solutions, and roadmap](osxfs.md#performance-issues-solutions-and-roadmap).
 
 * If your system does not have access to an NTP server, then after a hibernate
   the time seen by Docker Desktop may be considerably out of sync with the host.

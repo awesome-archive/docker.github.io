@@ -20,9 +20,8 @@ and a `docker-compose.yml` file. (You can use either a `.yml` or `.yaml` extensi
 
     The Dockerfile defines an application's image content via one or more build
     commands that configure that image. Once built, you can run the image in a
-    container.  For more information on `Dockerfile`, see the [Docker user
-    guide](/engine/tutorials/dockerimages.md#building-an-image-from-a-dockerfile)
-    and the [Dockerfile reference](/engine/reference/builder.md).
+    container.  For more information on `Dockerfile`, see the [Docker user guide](../get-started/index.md)
+    and the [Dockerfile reference](/engine/reference/builder/).
 
 3. Add the following content to the `Dockerfile`.
 
@@ -47,7 +46,7 @@ and a `docker-compose.yml` file. (You can use either a `.yml` or `.yaml` extensi
 6. Add the required software in the file.
 
        Django>=2.0,<3.0
-       psycopg2>=2.7,<3.0
+       psycopg2-binary>=2.8
 
 7. Save and close the `requirements.txt` file.
 
@@ -56,31 +55,42 @@ and a `docker-compose.yml` file. (You can use either a `.yml` or `.yaml` extensi
     The `docker-compose.yml` file describes the services that make your app. In
     this example those services are a web server and database.  The compose file
     also describes which Docker images these services use, how they link
-    together, any volumes they might need mounted inside the containers.
+    together, any volumes they might need to be mounted inside the containers.
     Finally, the `docker-compose.yml` file describes which ports these services
-    expose. See the [`docker-compose.yml` reference](compose-file.md) for more
+    expose. See the [`docker-compose.yml` reference](compose-file/index.md) for more
     information on how this file works.
 
-9.  Add the following configuration to the file.
+9. Add the following configuration to the file.
 
     ```none
-    version: '3'
-
-    services:
-      db:
-        image: postgres
-      web:
-        build: .
-        command: python manage.py runserver 0.0.0.0:8000
-        volumes:
-          - .:/code
-        ports:
-          - "8000:8000"
-        depends_on:
-          - db
+     version: '3'
+    
+     services:
+       db:
+         image: postgres
+         environment:
+           - POSTGRES_DB=postgres
+           - POSTGRES_USER=postgres
+           - POSTGRES_PASSWORD=postgres
+       web:
+         build: .
+         command: python manage.py runserver 0.0.0.0:8000
+         volumes:
+           - .:/code
+         ports:
+           - "8000:8000"
+         depends_on:
+           - db
     ```
 
     This file defines two services: The `db` service and the `web` service.
+
+    > Note:
+    >
+    > This uses the build in development server to run your application
+    > on port 8000. Do **not** use this in a production environment. For more 
+    > information, see [Django documentation]
+    > (https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server).
 
 10. Save and close the `docker-compose.yml` file.
 
@@ -91,7 +101,7 @@ In this step, you create a Django starter project by building the image from the
 1. Change to the root of your project directory.
 
 2. Create the Django project by running
-the [docker-compose run](/compose/reference/run/) command as follows.
+the [docker-compose run](reference/run.md) command as follows.
 
        sudo docker-compose run web django-admin startproject composeexample .
 
@@ -139,25 +149,28 @@ In this section, you set up the database connection for Django.
 
 1.  In your project directory, edit the `composeexample/settings.py` file.
 
-2.  Replace the `DATABASES = ...` with the following:
+2. Replace the `DATABASES = ...` with the following:
 
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': 'postgres',
-                'USER': 'postgres',
-                'HOST': 'db',
-                'PORT': 5432,
-            }
-        }
+       # settings.py
+       
+       DATABASES = {
+           'default': {
+               'ENGINE': 'django.db.backends.postgresql',
+               'NAME': 'postgres',
+               'USER': 'postgres',
+               'PASSWORD': 'postgres',
+               'HOST': 'db',
+               'PORT': 5432,
+           }
+       }
 
-    These settings are determined by the
-    [postgres](https://hub.docker.com/images/postgres) Docker image
-    specified in `docker-compose.yml`.
+   These settings are determined by the
+   [postgres](https://hub.docker.com/_/postgres) Docker image
+   specified in `docker-compose.yml`.
 
 3.  Save and close the file.
 
-4.  Run the [docker-compose up](/compose/reference/up/) command from the top level directory for your project.
+4.  Run the [docker-compose up](reference/up.md) command from the top level directory for your project.
 
     ```none
     $ docker-compose up
@@ -183,7 +196,7 @@ In this section, you set up the database connection for Django.
     At this point, your Django app should be running at port `8000` on
     your Docker host. On Docker Desktop for Mac and Docker Desktop for Windows, go
     to `http://localhost:8000` on a web browser to see the Django
-    welcome page. If you are using [Docker Machine](/machine/overview.md),
+    welcome page. If you are using [Docker Machine](../machine/overview.md),
     then `docker-machine ip MACHINE_VM` returns the Docker host IP
     address, to which you can append the port (`<Docker-Host-IP>:8000`).
 
@@ -223,7 +236,7 @@ def85eff5f51        django_web          "python3 manage.py..."   10 minutes ago 
       Killing test_db_1 ... done
       ```
 
-    * Or, for a more elegant shutdown, switch to a different shell, and run [docker-compose down](/compose/reference/down/) from the top level of your Django sample project directory.
+    * Or, for a more elegant shutdown, switch to a different shell, and run [docker-compose down](reference/down.md) from the top level of your Django sample project directory.
 
       ```none
       vmb at mymachine in ~/sandbox/django
@@ -245,5 +258,5 @@ def85eff5f51        django_web          "python3 manage.py..."   10 minutes ago 
 - [Getting Started](gettingstarted.md)
 - [Get started with Rails](rails.md)
 - [Get started with WordPress](wordpress.md)
-- [Command line reference](./reference/index.md)
-- [Compose file reference](compose-file.md)
+- [Command line reference](reference/index.md)
+- [Compose file reference](compose-file/index.md)

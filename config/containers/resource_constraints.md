@@ -15,16 +15,16 @@ on when you should set such limits and the possible implications of setting them
 
 Many of these features require your kernel to support Linux capabilities. To
 check for support, you can use the
-[`docker info`](/engine/reference/commandline/info.md) command. If a capability
+[`docker info`](../../engine/reference/commandline/info.md) command. If a capability
 is disabled in your kernel, you may see a warning at the end of the output like
 the following:
 
-```none
+```console
 WARNING: No swap limit support
 ```
 
 Consult your operating system's documentation for enabling them.
-[Learn more](/install/linux/linux-postinstall.md#your-kernel-does-not-support-cgroup-swap-limit-capabilities).
+[Learn more](../../engine/install/linux-postinstall.md#your-kernel-does-not-support-cgroup-swap-limit-capabilities).
 
 ## Memory
 
@@ -59,7 +59,7 @@ You can mitigate the risk of system instability due to OOME by:
 - Be mindful when configuring swap on your Docker hosts. Swap is slower and
   less performant than memory but can provide a buffer against running out of
   system memory.
-- Consider converting your container to a [service](/engine/swarm/services.md),
+- Consider converting your container to a [service](../../engine/swarm/services.md),
   and using service-level constraints and node labels to ensure that the
   application runs only on hosts with enough memory
 
@@ -111,9 +111,9 @@ Its setting can have complicated effects:
   [Prevent a container from using swap](#prevent-a-container-from-using-swap).
 
 - If `--memory-swap` is unset, and `--memory` is set, the container can use
-  twice as much swap as the `--memory` setting, if the host container has swap
+  as much swap as the `--memory` setting, if the host container has swap
   memory configured. For instance, if `--memory="300m"` and `--memory-swap` is
-  not set, the container can use 300m of memory and 600m of swap.
+  not set, the container can use 600m in total of memory and swap.
 
 - If `--memory-swap` is explicitly set to `-1`, the container is allowed to use
   unlimited swap, up to the amount available on the host system.
@@ -180,9 +180,9 @@ the container's cgroup on the host machine.
 
 | Option                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 |:-----------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `--cpus=<value>`       | Specify how much of the available CPU resources a container can use. For instance, if the host machine has two CPUs and you set `--cpus="1.5"`, the container is guaranteed at most one and a half of the CPUs. This is the equivalent of setting `--cpu-period="100000"` and `--cpu-quota="150000"`. Available in Docker 1.13 and higher.                                                                                                                                                                                                                                 |
-| `--cpu-period=<value>` | Specify the CPU CFS scheduler period, which is used alongside  `--cpu-quota`. Defaults to 100 micro-seconds. Most users do not change this from the default. If you use Docker 1.13 or higher, use `--cpus` instead.                                                                                                                                                                                                                                                                                                                                                              |
-| `--cpu-quota=<value>`  | Impose a CPU CFS quota on the container. The number of microseconds per `--cpu-period` that the container is limited to before throttled. As such acting as the effective ceiling. If you use Docker 1.13 or higher, use `--cpus` instead.                                                                                                                                                                                                                                                                                                                                                                |
+| `--cpus=<value>`       | Specify how much of the available CPU resources a container can use. For instance, if the host machine has two CPUs and you set `--cpus="1.5"`, the container is guaranteed at most one and a half of the CPUs. This is the equivalent of setting `--cpu-period="100000"` and `--cpu-quota="150000"`. Available in Docker 1.13 and higher.                                                                                                                                                                                                                                                           |
+| `--cpu-period=<value>` | Specify the CPU CFS scheduler period, which is used alongside  `--cpu-quota`. Defaults to 100 micro-seconds. Most users do not change this from the default. If you use Docker 1.13 or higher, use `--cpus` instead.                                                                                                                                                                                                                                                                                                                                                                                 |
+| `--cpu-quota=<value>`  | Impose a CPU CFS quota on the container. The number of microseconds per `--cpu-period` that the container is limited to before throttled. As such acting as the effective ceiling. If you use Docker 1.13 or higher, use `--cpus` instead.                                                                                                                                                                                                                                                                                                                                                           |
 | `--cpuset-cpus`        | Limit the specific CPUs or cores a container can use. A comma-separated list or hyphen-separated range of CPUs a container can use, if you have more than one CPU. The first CPU is numbered 0. A valid value might be `0-3` (to use the first, second, third, and fourth CPU) or `1,3` (to use the second and fourth CPU).                                                                                                                                                                                                                                                                          |
 | `--cpu-shares`         | Set this flag to a value greater or less than the default of 1024 to increase or reduce the container's weight, and give it access to a greater or lesser proportion of the host machine's CPU cycles. This is only enforced when CPU cycles are constrained. When plenty of CPU cycles are available, all containers use as much CPU as they need. In that way, this is a soft limit. `--cpu-shares` does not prevent containers from being scheduled in swarm mode. It prioritizes container CPU resources for the available CPU cycles. It does not guarantee or reserve any specific CPU access. |
 
@@ -209,11 +209,11 @@ realtime scheduler, for tasks which cannot use the CFS scheduler. You need to
 before you can [configure the Docker daemon](#configure-the-docker-daemon) or
 [configure individual containers](#configure-individual-containers).
 
->**Warning**:
->CPU scheduling and prioritization are advanced kernel-level
-features. Most users do not need to change these values from their defaults.
-Setting these values incorrectly can cause your host system to become unstable
-or unusable.
+> **Warning**
+>
+> CPU scheduling and prioritization are advanced kernel-level features. Most
+> users do not need to change these values from their defaults. Setting these
+> values incorrectly can cause your host system to become unstable or unusable.
 {:.warning}
 
 #### Configure the host machine's kernel
@@ -233,7 +233,7 @@ for realtime tasks per runtime period. For instance, with the default period of
 containers using the realtime scheduler can run for 950000 microseconds for every
 1000000-microsecond period, leaving at least 50000 microseconds available for
 non-realtime tasks. To make this configuration permanent on systems which use
-`systemd`, see [Control and configure Docker with systemd](/config/daemon/systemd.md).
+`systemd`, see [Control and configure Docker with systemd](../daemon/systemd.md).
 
 #### Configure individual containers
 
@@ -251,10 +251,11 @@ The following example command sets each of these three flags on a `debian:jessie
 container.
 
 ```bash
-$ docker run -it --cpu-rt-runtime=950000 \
-                  --ulimit rtprio=99 \
-                  --cap-add=sys_nice \
-                  debian:jessie
+$ docker run -it \
+    --cpu-rt-runtime=950000 \
+    --ulimit rtprio=99 \
+    --cap-add=sys_nice \
+    debian:jessie
 ```
 
 If the kernel or Docker daemon is not configured correctly, an error occurs.
@@ -331,15 +332,17 @@ $ docker run -it --rm --gpus device=0,2 nvidia-smi
 
 Exposes the first and third GPUs.
 
-> **Note**: NVIDIA GPUs can only be accessed by systems running a single engine.
+> **Note**
+>
+> NVIDIA GPUs can only be accessed by systems running a single engine.
 
 #### Set NVIDIA capabilities
 
 You can set capabilities manually. For example, on Ubuntu you can run the
 following:
 
-```
-docker run --gpus 'all,capabilities=utility' --rm ubuntu nvidia-smi
+```bash
+$ docker run --gpus 'all,capabilities=utility' --rm ubuntu nvidia-smi
 ```
 
 This enables the `utility` driver capability which adds the `nvidia-smi` tool to

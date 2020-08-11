@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Networking overview
 description: Overview of Docker networks and networking concepts
 keywords: networking, bridge, routing, routing mesh, overlay, ports
 redirect_from:
@@ -19,20 +19,13 @@ This topic defines some basic Docker networking concepts and prepares you to
 design and deploy your applications to take full advantage of these
 capabilities.
 
-Most of this content applies to all Docker installations. However,
-[a few advanced features](#docker-ee-networking-features) are only available to
-Docker EE customers.
-
 ## Scope of this topic
 
 This topic does **not** go into OS-specific details about how Docker networks
 work, so you will not find information about how Docker manipulates `iptables`
 rules on Linux or how it manipulates routing rules on Windows servers, and you
 will not find detailed information about how Docker forms and encapsulates
-packets or handles encryption. See [Docker and iptables](/network/iptables.md)
-and
-[Docker Reference Architecture: Designing Scalable, Portable Docker Container Networks](http://success.docker.com/article/networking)
-for a much greater depth of technical detail.
+packets or handles encryption. See [Docker and iptables](iptables.md).
 
 In addition, this topic does not provide any tutorials for how to create,
 manage, and use Docker networks. Each section includes links to relevant
@@ -94,20 +87,6 @@ exist by default, and provide core networking functionality:
   unique MAC address.
 - **Third-party network plugins** allow you to integrate Docker with specialized
   network stacks.
-
-## Docker EE networking features
-
-The following two features are only possible when using Docker EE and managing
-your Docker services using Universal Control Plane (UCP):
-
-- The [HTTP routing mesh](/ee/ucp/interlock)
-  allows you to share the same network IP address and port among multiple
-  services. UCP routes the traffic to the appropriate service using the
-  combination of hostname and port, as requested from the client.
-
-- [Session stickiness](/ee/ucp/interlock/usage/sessions/) allows you to specify information in the HTTP header
-  which UCP uses to route subsequent requests to the same service task, for
-  applications which require stateful sessions.
 
 ## Networking tutorials
 

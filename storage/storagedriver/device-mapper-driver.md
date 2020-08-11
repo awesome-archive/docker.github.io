@@ -14,22 +14,19 @@ storage driver as `devicemapper`, and the kernel framework as _Device Mapper_.
 
 For the systems where it is supported, `devicemapper` support is included in
 the Linux kernel. However, specific configuration is required to use it with
-Docker. 
+Docker.
 
 The `devicemapper` driver uses block devices dedicated to Docker and operates at
 the block level, rather than the file level. These devices can be extended by
 adding physical storage to your Docker host, and they perform better than using
-a filesystem at the operating system (OS) level. 
+a filesystem at the operating system (OS) level.
 
 ## Prerequisites
 
-- `devicemapper` storage driver is a supported storage driver for Docker
-  EE on many OS distribution. See the
-  [Product compatibility matrix](https://success.docker.com/article/compatibility-matrix) for details.
-
-- `devicemapper` is also supported on Docker Engine - Community running on CentOS, Fedora,
+- `devicemapper` is supported on Docker Engine - Community running on CentOS, Fedora,
   Ubuntu, or Debian.
-
+- `devicemapper` requires the `lvm2` and `device-mapper-persistent-data` packages
+  to be installed.
 - Changing the storage driver makes any containers you have already
   created inaccessible on the local system. Use `docker save` to save containers,
   and push existing images to Docker Hub or a private repository, so you do
@@ -73,10 +70,8 @@ For production systems, see
     }
     ```
 
-    See all storage options for each storage driver:
-
-    - [Stable](/engine/reference/commandline/dockerd.md#storage-driver-options)
-    - [Edge](/edge/engine/reference/commandline/dockerd.md#storage-driver-options)
+    See all storage options for each storage driver in the
+    [daemon reference documentation](/engine/reference/commandline/dockerd/#storage-driver-options)
 
     Docker does not start if the `daemon.json` file contains badly-formed JSON.
 
@@ -183,10 +178,8 @@ options in the table above.
 }
 ```
 
-See all storage options for each storage driver:
-
-- [Stable](/engine/reference/commandline/dockerd.md#storage-driver-options)
-- [Edge](/edge/engine/reference/commandline/dockerd.md#storage-driver-options)
+See all storage options for each storage driver in the
+[daemon reference documentation](/engine/reference/commandline/dockerd/#storage-driver-options)
 
 Restart Docker for the changes to take effect. Docker invokes the commands to
 configure the block device for you.
@@ -835,11 +828,11 @@ storage driver.
   by default `/var/lib/docker`.  If your containers generate lots of log messages, 
   this may lead to increased disk usage or the inability to manage your system due
   to a full disk.  You can configure a 
-  [log driver](/config/containers/logging/configure.md) to store your container
+  [log driver](../../config/containers/logging/configure.md) to store your container
   logs externally.
 
 ## Related Information
 
-* [Volumes](/storage/volumes.md)
-* [Understand images, containers, and storage drivers](imagesandcontainers.md)
-* [Select a storage driver](selectadriver.md)
+- [Volumes](../volumes.md)
+- [Understand images, containers, and storage drivers](index.md)
+- [Select a storage driver](select-storage-driver.md)

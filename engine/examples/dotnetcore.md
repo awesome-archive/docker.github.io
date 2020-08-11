@@ -35,13 +35,14 @@ tutorial](https://www.asp.net/get-started) to initialize a project or clone our 
 2.  Add the text below to your `Dockerfile` for either Linux or [Windows
    Containers](https://docs.microsoft.com/virtualization/windowscontainers/about/).
     The tags below are multi-arch meaning they pull either Windows or
-    Linux containers depending on what mode is set in [Docker Desktop for
-Windows](/docker-for-windows/). Read more on [switching containers](/docker-for-windows/#switch-between-windows-and-linux-containers).
+    Linux containers depending on what mode is set in
+    [Docker Desktop for Windows](../../docker-for-windows/index.md). Read more on
+    [switching containers](../../docker-for-windows/index.md#switch-between-windows-and-linux-containers).
 3.  The `Dockerfile` assumes that your application is called `aspnetapp`. Change
    the `Dockerfile` to use the DLL file of your project.
 
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -53,7 +54,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "aspnetapp.dll"]
@@ -64,8 +65,8 @@ ENTRYPOINT ["dotnet", "aspnetapp.dll"]
    to your project folder and copy the following into it.
 
 ```dockerignore
-bin\
-obj\
+bin/
+obj/
 ```
 
 ## Build and run the Docker image
@@ -81,11 +82,9 @@ $ docker run -d -p 8080:80 --name myapp aspnetapp
 ## View the web page running from a container
 
 * Go to [localhost:8080](http://localhost:8080) to access your app in a web browser.
-* If you are using the Nano [Windows
-  Container](/docker-for-windows/) and have not updated
-   to the Windows Creator Update there is a bug affecting how [Windows 10
-   talks to Containers via
-  "NAT"](https://github.com/Microsoft/Virtualization-Documentation/issues/181#issuecomment-252671828)
+* If you are using the Nano [Windows Container](../../docker-for-windows/index.md)
+  and have not updated to the Windows Creator Update there is a bug affecting how
+  [Windows 10 talks to Containers via "NAT"](https://github.com/Microsoft/Virtualization-Documentation/issues/181#issuecomment-252671828)
   (Network Address Translation). You must hit the IP of the container
   directly. You can get the IP address of your container with the following
   steps:
@@ -97,5 +96,5 @@ $ docker run -d -p 8080:80 --name myapp aspnetapp
 
   - [ASP.NET Core](https://docs.microsoft.com/aspnet/core/)
   - [Microsoft ASP.NET Core on Docker Hub](https://hub.docker.com/r/microsoft/dotnet/)
-  - [Building Docker Docker Images for ASP.NET Core](https://docs.microsoft.com/aspnet/core/host-and-deploy/docker/building-net-docker-images)
+  - [Building Docker Images for ASP.NET Core](https://docs.microsoft.com/aspnet/core/host-and-deploy/docker/building-net-docker-images)
   - [Docker Tools for Visual Studio](https://docs.microsoft.com/dotnet/articles/core/docker/visual-studio-tools-for-docker)

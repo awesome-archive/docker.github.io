@@ -1,15 +1,13 @@
 ---
 description: Performing basic operation to use Notary in tandem with Docker Content Trust.
 keywords: docker, Notary, notary-client, docker content trust, content trust
-title: Get started with Docker Notary
+title: Get started with Notary
 ---
 
 This document describes basic use of the Notary CLI as a tool supporting Docker
 Content Trust. For more advanced use cases, you must
 [run your own Notary service](running_a_service.md). Read the
 [use the Notary client for advanced users](advanced_usage.md) documentation.
-> **Warning**:  Assistance with the open-source notary client or server is not provided by 
-Docker Enterprise Customer Support.
 
 
   

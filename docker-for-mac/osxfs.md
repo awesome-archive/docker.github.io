@@ -61,9 +61,9 @@ bin	dev	home	lib32	libx32	mnt	proc	run	srv	tmp	var
 
 By default, you can share files in `/Users/`, `/Volumes/`, `/private/`, and
 `/tmp` directly. To add or remove directory trees that are exported to Docker,
-use the **File sharing** tab in Docker preferences ![whale
-menu](images/whale-x.png){: .inline} -> **Preferences** ->
-**File sharing**. (See [Preferences](/docker-for-mac/index.md#preferences-menu).)
+use the **File sharing** tab in Docker preferences
+![whale menu](images/whale-x.png){: .inline} -> **Preferences** ->
+**File sharing**. (See [Preferences](index.md#file-sharing).)
 
 All other paths
 used in `-v` bind mounts are sourced from the Moby Linux VM running the Docker
@@ -117,7 +117,7 @@ The following are **unsupported file system events**:
 * Open
 * Access
 * Close events
-* Unmount events (see <a href="osxfs.md#mounts">Mounts</a>)
+* Unmount events (see [Mounts](#mounts))
 
 Some events may be delivered multiple times. These limitations do not apply to
 events between containers, only to those events originating in macOS.
@@ -152,6 +152,32 @@ Extended attributes are not yet supported.
 
 `osxfs` does not use OSXFUSE. `osxfs` does not run under, inside, or
 between macOS userspace processes and the macOS kernel.
+
+### SSH agent forwarding
+
+Docker Desktop for Mac allows you to use the host’s SSH agent inside a container. To do this:
+
+1. Bind mount the SSH agent socket by adding the following parameter to your `docker run` command:
+
+    `--mount type=bind,src=/run/host-services/ssh-auth.sock,target=/run/host-services/ssh-auth.sock`
+
+1. Add the `SSH_AUTH_SOCK` environment variable in your container:
+
+    `-e SSH_AUTH_SOCK="/run/host-services/ssh-auth.sock"`
+
+To enable the SSH agent in Docker Compose, add the following flags to your service:
+
+ ```yaml
+services:
+  web:
+    image: nginx:alpine
+    volumes:
+      - type: bind
+        source: /run/host-services/ssh-auth.sock
+        target: /run/host-services/ssh-auth.sock
+    environment:
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+ ```
 
 ### Performance issues, solutions, and roadmap
 

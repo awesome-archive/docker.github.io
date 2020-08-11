@@ -75,7 +75,7 @@ this in a few different ways.
 
   Next, the Dockerfile:
 
-  ```conf
+  ```dockerfile
   FROM ubuntu:latest
   COPY my_first_process my_first_process
   COPY my_second_process my_second_process
@@ -88,29 +88,28 @@ this in a few different ways.
   the main process) then you can use bash's job control to facilitate that.
   First, the wrapper script:
 
-
   ```bash
   #!/bin/bash
-
+  
   # turn on bash's job control
   set -m
-
+  
   # Start the primary process and put it in the background
   ./my_main_process &
-
+  
   # Start the helper process
   ./my_helper_process
-
+  
   # the my_helper_process might need to know how to wait on the
   # primary process to start before it does its work and returns
-
-
+  
+  
   # now we bring the primary process back into the foreground
   # and leave it there
   fg %1
   ```
- 
-  ```conf
+
+  ```dockerfile
   FROM ubuntu:latest
   COPY my_main_process my_main_process
   COPY my_helper_process my_helper_process
@@ -127,7 +126,7 @@ this in a few different ways.
   and `my_second_process` files all exist in the same directory as your
   Dockerfile.
 
-  ```conf
+  ```dockerfile
   FROM ubuntu:latest
   RUN apt-get update && apt-get install -y supervisor
   RUN mkdir -p /var/log/supervisor

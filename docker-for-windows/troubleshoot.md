@@ -9,10 +9,25 @@ title: Logs and troubleshooting
 
 This page contains information on how to diagnose and troubleshoot problems, send logs and communicate with the Docker Desktop team, use our forums and Knowledge Hub, browse and log issues on GitHub, and find workarounds for known problems.
 
-## Docker Knowledge Hub
+## Troubleshoot
 
-**Looking for help with Docker Desktop for Windows?** Check out [Docker Success Center](http://success.docker.com/q) for knowledge base articles, FAQs, and
-technical support for various subscription levels.
+Choose ![whale menu](images/whale-x.png){: .inline} > **Troubleshoot**
+from the menu bar to see the troubleshoot options.
+
+![Uninstall or reset Docker](images/troubleshoot.png){:width="750px"}
+
+The Troubleshoot page contains the following options:
+
+* **Restart Docker Desktop**: Select to restart Docker Desktop.
+
+* **Run Diagnostics**: Select this option to diagnose any issues on Docker Desktop. For detailed information about diagnostics, see [Diagnose problems, send feedback, and create GitHub issues](#diagnose-problems-send-feedback-and-create-github-issues).
+
+* **Clean / Purge data**: Select this option to delete container and image data. Choose whether you'd like to delete data from Hyper-V, WSL 2, or Windows Containers and then click **Delete** to confirm.
+
+* **Reset Kubernetes cluster**: Select this option to delete all stacks and Kubernetes resources. For more information, see [Kubernetes](index.md#kubernetes).
+
+* **Reset to factory defaults**: Choose this option to reset all options on
+Docker Desktop to their initial state, the same as when Docker Desktop was first installed.
 
 ## Diagnose problems, send feedback, and create GitHub issues
 
@@ -85,16 +100,16 @@ As well as on the registry. For example:
 2017/06/20 18:15:30 http: TLS handshake error from 192.168.203.139:52883: tls: first record does not look like a TLS handshake
 ```
 
-For more about using client and server side certificates, see [How do I add
-custom CA certificates?](index.md#how-do-i-add-custom-ca certificates) and [How
-do I add client certificates?](index.md#how-do-i-add-client-certificates) in the
+For more about using client and server side certificates, see
+[How do I add custom CA certificates?](index.md#how-do-i-add-custom-ca-certificates)
+and [How do I add client certificates?](index.md#how-do-i-add-client-certificates) in the
 Getting Started topic.
 
 ### Volumes
 
 #### Permissions errors on data directories for shared volumes
 
-Docker Desktop sets permissions on [shared volumes](index.md#shared-drives)
+Docker Desktop sets permissions on [shared volumes](index.md#file-sharing)
 to a default value of [0777](http://permissions-calculator.org/decode/0777/)
 (`read`, `write`, `execute` permissions for `user` and for `group`).
 
@@ -104,158 +119,25 @@ volume defaults at container runtime, you need to either use non-host-mounted
 volumes or find a way to make the applications work with the default file
 permissions.
 
-Docker Desktop currently implements host-mounted volumes based on [Microsoft SMB
-protocol](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365233(v=vs.85).aspx), which does not support fine-grained, `chmod` control over these permissions.
+See also,
+[Can I change permissions on shared volumes for container-specific deployment requirements?](faqs.md#can-i-change-permissions-on-shared-volumes-for-container-specific-deployment-requirements)
+in the FAQs.
 
-See also, [Can I change permissions on shared volumes for container-specific
-deployment
-requirements?](faqs.md#can-i-change-permissions-on-shared-volumes-for-container-specific-deployment-requirements)
-in the FAQs, and for more of an explanation, the GitHub issue, [Controlling
-Unix-style perms on directories passed through from shared Windows
-drives](https://github.com/docker/docker.github.io/issues/3298).
-
-#### inotify on shared drives does not work
-
-Currently, `inotify` does not work on Docker Desktop. This becomes evident,
-for example, when an application needs to read/write to a container across a
-mounted drive. Instead of relying on filesystem inotify, we recommend using
-polling features for your framework or programming language.
-
-* **Workaround for nodemon and Node.js** - If you are using
-  [nodemon](https://github.com/remy/nodemon) with `Node.js`, try the fallback
-  polling mode described here: [nodemon isn't restarting node
-  applications](https://github.com/remy/nodemon#application-isnt-restarting).
-
-* **Docker Desktop for Windows issue on GitHub** - See the issue [Inotify on shared drives does not work](https://github.com/docker/for-win/issues/56#issuecomment-242135705).
-
-#### Volume mounting requires shared drives for Linux containers
+#### Volume mounting requires shared folders for Linux containers
 
 If you are using mounted volumes and get runtime errors indicating an
 application file is not found, access is denied to a volume mount, or a service
-cannot start, such as when using [Docker Compose](/compose/gettingstarted.md),
-you might need to enable [shared drives](index.md#shared-drives).
+cannot start, such as when using [Docker Compose](../compose/gettingstarted.md),
+you might need to enable [shared folders](index.md#file-sharing).
 
-Volume mounting requires shared drives for Linux containers (not for Windows
+Volume mounting requires shared folders for Linux containers (not for Windows
 containers). Click ![whale menu](images/whale-x.png){: .inline}
- and then **Settings** > **Shared Drives** and share the drive that contains the
+ and then **Settings** > **Shared Folders** and share the folder that contains the
 Dockerfile and volume.
 
-#### Verify domain user has permissions for shared drives (volumes)
+#### Support for symlinks
 
-> **Tip**: Shared drives are only required for volume mounting [Linux
-> containers](index.md#switch-between-windows-and-linux-containers), not Windows
-> containers.
-
-Permissions to access shared drives are tied to the username and password you
-use to set up [shared drives](index.md#shared-drives). If you run `docker`
-commands and tasks under a different username than the one used to set up shared
-drives, your containers don't have permissions to access the mounted volumes.
-The volumes show as empty.
-
-The solution to this is to switch to the domain user account and reset
-credentials on shared drives.
-
-Here is an example of how to debug this problem, given a scenario where you
-shared the `C` drive as a local user instead of as the domain user. Assume the
-local user is `samstevens` and the domain user is `merlin`.
-
-1. Make sure you are logged in as the Windows domain user (for our example,
-   `merlin`).
-
-2. Run `net share c` to view user permissions for `<host>\<username>, FULL`.
-
-   ```
-   > net share c
-
-   Share name        C
-   Path              C:\
-   Remark
-   Maximum users     No limit
-   Users             SAMSTEVENS
-   Caching           Caching disabled
-   Permission        windowsbox\samstevens, FULL
-   ```
-
-3. Run the following command to remove the share.
-
-   ```
-   > net share c /delete
-   ```
-
-4. Re-share the drive via the [Shared Drives dialog](index.md#shared-drives),
-   and provide the Windows domain user account credentials.
-
-5. Re-run `net share c`.
-
-   ```
-   > net share c
-
-   Share name        C
-   Path              C:\
-   Remark
-   Maximum users     No limit
-   Users             MERLIN
-   Caching           Caching disabled
-   Permission        windowsbox\merlin, FULL
-   ```
-
-See also, the related issue on GitHub, [Mounted volumes are empty in the
-container](https://github.com/docker/for-win/issues/25).
-
-#### Volume mounts from host paths use a `nobrl` option to override database locking
-
-You may encounter problems using volume mounts on the host, depending on the
-database software and which options are enabled. Docker Desktop for Windows uses
-[SMB/CIFS
-protocols](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365233(v=vs.85).aspx)
-to mount host paths, and mounts them with the `nobrl` option, which prevents
-lock requests from being sent to the database server
-([docker/for-win#11](https://github.com/docker/for-win/issues/11),
-[docker/for-win#694](https://github.com/docker/for-win/issues/694)). This is
-done to ensure container access to database files shared from the host. Although
-it solves the over-the-network database access problem, this "unlocked" strategy
-can interfere with other aspects of database functionality (for example,
-write-ahead logging (WAL) with SQLite, as described in
-[docker/for-win#1886](https://github.com/Sonarr/Sonarr/issues/1886)).
-
-If possible, avoid using shared drives for volume mounts on the host with
-network paths, and instead mount on the MobyVM, or create a [data
-volume](/engine/tutorials/dockervolumes.md#data-volumes) (named volume) or [data
-container](/engine/tutorials/dockervolumes.md#creating-and-mounting-a-data-volume-container).
-See also, the [volumes key under service
-configuration](/compose/compose-file/index.md#volumes) and the [volume
-configuration
-reference](/compose/compose-file/index.md#volume-configuration-reference) in the
-Compose file documentation.
-
-#### Local security policies can block shared drives and cause login errors
-
-You need permissions to mount shared drives to use the Docker Desktop for Windows
-[shared drives](index.md#shared-drives) feature.
-
-If local policy prevents this, you get errors when you attempt to enable shared
-drives on Docker. This is not something Docker can resolve, since you do need
-these permissions to use the feature.
-
-Here are snip-its from example error messages:
-
-```none
-Logon failure: the user has not been granted the requested logon type at
-this computer.
-
-[19:53:26.900][SambaShare     ][Error  ] Unable to mount C drive: mount
-error(5): I/O error Refer to the mount.cifs(8) manual page (e.g. man mount.cifs)
-mount: mounting //10.0.75.1/C on /c failed: Invalid argument
-```
-
-See also, <a href="https://github.com/docker/for-win/issues/98">Docker for
-Windows issue #98</a>.
-
-#### Understand symlinks limitations
-
-Symlinks work within and across containers. However, symlinks created outside of
-containers (for example, on the host) do not work. To learn more, see [Are
-symlinks supported?](faqs.md#are-symlinks-supported) in the FAQs.
+Symlinks work within and across containers. To learn more, see [How do symlinks work on Windows?](faqs.md#how-do-symlinks-work-on-windows) in the FAQs.
 
 #### Avoid unexpected syntax errors, use Unix style line endings for files in containers
 
@@ -277,12 +159,12 @@ script](https://github.com/moby/moby/issues/24388).
 
 ### Virtualization
 
-For Docker Desktop to function correctly, your machine must have the following features:
+ Your machine must have the following features for Docker Desktop to function correctly:
 
 1. [Hyper-V](https://docs.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-technology-overview)
    installed and working
 
-2. Virtualization enabled
+2. Virtualization enabled in the BIOS
 
 #### Hyper-V
 
@@ -302,22 +184,21 @@ In the subsequent screen, verify that Hyper-V is enabled:
 #### Hyper-V driver for Docker Machine
 
 The Docker Desktop installation includes the legacy tool Docker Machine which uses the old
-[`boot2docker.iso`](https://github.com/boot2docker/boot2docker){:
-target="_blank" class="_"}, and the [Microsoft Hyper-V
-driver](/machine/drivers/hyper-v.md) to create local virtual machines. _This is
-tangential to using Docker Desktop_, but if you want to use Docker Machine
-to create multiple local Virtual Machines (VMs), or to provision remote machines, see the [Docker
-Machine](/machine/index.md) topics. This is documented only for users looking for information about Docker Machine on Windows, which requires that Hyper-V is enabled, an external network switch is active, and referenced in the flags for the `docker-machine create` command [as described in the Docker
-Machine driver example](/machine/drivers/hyper-v.md#example).
+[`boot2docker.iso`](https://github.com/boot2docker/boot2docker){:target="_blank" class="_"},
+and the [Microsoft Hyper-V driver](../machine/drivers/hyper-v.md) to create local
+virtual machines. _This is tangential to using Docker Desktop_, but if you want to use Docker Machine
+to create multiple local Virtual Machines (VMs), or to provision remote machines, see the
+[Docker Machine](../machine/index.md) topics. This is documented only for users looking for information about Docker Machine on Windows, which requires that Hyper-V is enabled, an external network switch is active, and referenced in the flags for the `docker-machine create` command
+as described in the [Docker Machine driver example](../machine/drivers/hyper-v.md#example).
 
 #### Virtualization must be enabled
 
-In addition to [Hyper-V](#hyper-v), virtualization must be enabled. Check the
+In addition to [Hyper-V](#hyper-v) or [WSL 2](wsl.md), virtualization must be enabled. Check the
 Performance tab on the Task Manager:
 
 ![Task Manager](images/virtualization-enabled.png){:width="700px"}
 
-If you manually uninstall Hyper-V or disable virtualization,
+If you manually uninstall Hyper-V, WSL 2 or disable virtualization,
 Docker Desktop cannot start. See [Unable to run Docker for Windows on
 Windows 10 Enterprise](https://github.com/docker/for-win/issues/74).
 
@@ -344,14 +225,14 @@ Here are some steps to take if you experience similar problems:
 
     ![Hyper-V manager](images/hyperv-manager.png)
 
-4.  Set up an external network switch. If you plan at any point to use [Docker
-    Machine](/machine/overview.md) to set up multiple local VMs, you need this
-    anyway, as described in the topic on the [Hyper-V driver for Docker
-    Machine](/machine/drivers/hyper-v.md#example). You can replace `DockerNAT`
-    with this switch.
+4.  Set up an external network switch. If you plan at any point to use
+    [Docker Machine](../machine/overview.md) to set up multiple local VMs, you
+    need this anyway, as described in the topic on the
+    [Hyper-V driver for Docker Machine](../machine/drivers/hyper-v.md#example).
+    You can replace `DockerNAT` with this switch.
 
-5.  If previous steps fail to solve the problems, follow steps on the [Cleanup
-    README](https://github.com/Microsoft/Virtualization-Documentation/blob/master/windows-server-container-tools/CleanupContainerHostNetworking/README.md).
+5.  If previous steps fail to solve the problems, follow steps on the
+    [Cleanup README](https://github.com/Microsoft/Virtualization-Documentation/blob/master/windows-server-container-tools/CleanupContainerHostNetworking/README.md).
 
     > Read the full description before you run the Windows cleanup script.
     >
@@ -361,16 +242,11 @@ Here are some steps to take if you experience similar problems:
 
 ### Windows containers and Windows Server
 
-Docker Desktop is not supported on Windows Server. Instead, you can use
-[Docker Enterprise Basic](/ee/index.md) at no additional cost.
+Docker Desktop is not supported on Windows Server. If you have questions about how to run Windows containers on Windows 10, see
+[Switch between Windows and Linux containers](index.md#switch-between-windows-and-linux-containers).
 
-If you have questions about how to run Windows containers on Windows 10, see
-[Switch between Windows and Linux
-containers](index.md#switch-between-windows-and-linux-containers).
-
-A full tutorial is available in [docker/labs](https://github.com/docker/labs) at
-[Getting Started with Windows
-Containers](https://github.com/docker/labs/blob/master/windows/windows-containers/README.md).
+A full tutorial is available in [docker/labs](https://github.com/docker/labs) on
+[Getting Started with Windows Containers](https://github.com/docker/labs/blob/master/windows/windows-containers/README.md).
 
 You can install a native Windows binary which allows you to develop and run
 Windows containers without Docker Desktop. However, if you install Docker this way, you cannot develop or run Linux containers. If you try to run a Linux container on the native Docker daemon, an error occurs:
@@ -407,8 +283,7 @@ Linux containers).
 To reach a Windows container from the local host, you need to specify the IP
 address and port for the container that is running the service.
 
-You can get the container IP address by using [`docker
-inspect`](/engine/reference/commandline/inspect.md) with some `--format` options
+You can get the container IP address by using [`docker inspect`](../engine/reference/commandline/inspect.md) with some `--format` options
 and the ID or name of the container. For the example above, the command would
 look like this, using the name we gave to the container (`webserver`) instead of
 the container ID:
@@ -499,6 +374,8 @@ Discussion thread on GitHub at [Docker for Windows issue
 
 ### Networking issues
 
+IPv6 is not (yet) supported on Docker Desktop.
+
 Some users have reported problems connecting to Docker Hub on the Docker Desktop stable version. (See GitHub issue
 [22567](https://github.com/moby/moby/issues/22567).)
 
@@ -527,14 +404,6 @@ the prefix from the **Settings** menu. See the [Network](index.md#network) topic
 under [Settings](index.md#docker-settings).
 
 ## Workarounds
-
-### `inotify` currently does not work on Docker Desktop
-
-If you are using `Node.js` with `nodemon`, a temporary workaround is to try the
-fallback polling mode described here: [nodemon isn't restarting node
-applications](https://github.com/remy/nodemon#application-isnt-restarting). See
-also this issue on GitHub [Inotify on shared drives does not
-work](https://github.com/docker/for-win/issues/56#issuecomment-242135705).
 
 ### Reboot
 
@@ -568,20 +437,12 @@ currently using the port (the PID is the number in the rightmost column). Decide
 whether to shut the other process down, or to use a different port in your
 docker app.
 
-### Docker fails to start when firewall or anti-virus software is installed
+### Docker Desktop fails to start when anti-virus software is installed
 
-Some firewalls and anti-virus software might be incompatible with Microsoft
-**Windows 10 builds**, such as Windows 10 Anniversary Update. The conflict
-typically occurs after a Windows update or new install of the firewall, and
-manifests as an error response from the Docker daemon and a **Docker Desktop start failure**. The Comodo Firewall was one example of this problem, but users report that software has since been updated to work with these Windows 10 builds.
+Some anti-virus software may be incompatible with Hyper-V and Microsoft
+Windows 10 builds. The conflict
+typically occurs after a Windows update and
+manifests as an error response from the Docker daemon and a Docker Desktop start failure.
 
-See the Comodo forums topics [Comodo Firewall conflict with
-Hyper-V](https://forums.comodo.com/bug-reports-cis/comodo-firewall-began-conflict-with-hyperv-t116351.0.html)
-and [Windows 10 Anniversary build doesn't allow Comodo drivers to be
-installed](https://forums.comodo.com/install-setup-configuration-help-cis/windows-10-aniversary-build-doesnt-allow-comodo-drivers-to-be-installed-t116322.0.html).
-A Docker Desktop user-created issue describes the problem specifically as it
-relates to Docker: [Docker fails to start on Windows
-10](https://github.com/docker/for-win/issues/27).
-
-For a temporary workaround, uninstall the firewall or anti-virus software, or
-explore other workarounds suggested on the forum.
+For a temporary workaround, uninstall the anti-virus software, or
+explore other workarounds suggested on Docker Desktop forums.

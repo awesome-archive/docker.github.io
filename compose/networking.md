@@ -4,19 +4,18 @@ keywords: documentation, docs, docker, compose, orchestration, containers, netwo
 title: Networking in Compose
 ---
 
-> This page applies to Compose file formats [version 2](compose-file/compose-file-v2.md) and [higher](compose-file/). Networking features are not supported for Compose file [version 1 (legacy)](compose-file/compose-file-v1.md).
+> This page applies to Compose file formats [version 2](compose-file/compose-file-v2.md) and [higher](compose-file/index.md). Networking features are not supported for Compose file [version 1 (legacy)](compose-file/compose-file-v1.md).
 
 By default Compose sets up a single
-[network](/engine/reference/commandline/network_create/) for your app. Each
+[network](../engine/reference/commandline/network_create.md) for your app. Each
 container for a service joins the default network and is both *reachable* by
 other containers on that network, and *discoverable* by them at a hostname
 identical to the container name.
 
 > **Note**: Your app's network is given a name based on the "project name",
 > which is based on the name of the directory it lives in. You can override the
-> project name with either the [`--project-name`
-> flag](reference/overview.md) or the [`COMPOSE_PROJECT_NAME` environment
-> variable](reference/envvars.md#compose-project-name).
+> project name with either the [`--project-name` flag](reference/overview.md)
+> or the [`COMPOSE_PROJECT_NAME` environment variable](reference/envvars.md#compose_project_name).
 
 For example, suppose your app is in a directory called `myapp`, and your `docker-compose.yml` looks like this:
 
@@ -56,7 +55,7 @@ using the Postgres database.
 It is important to note the distinction between `HOST_PORT` and `CONTAINER_PORT`.
 In the above example, for `db`, the `HOST_PORT` is `8001` and the container port is
 `5432` (postgres default). Networked service-to-service
-communication use the `CONTAINER_PORT`. When `HOST_PORT` is defined,
+communication uses the `CONTAINER_PORT`. When `HOST_PORT` is defined,
 the service is accessible outside the swarm as well.
 
 Within the `web` container, your connection string to `db` would look like
@@ -87,11 +86,11 @@ See the [links reference](compose-file/compose-file-v2.md#links) for more inform
 
 ## Multi-host networking
 
-> **Note**: The instructions in this section refer to [legacy Docker Swarm](/compose/swarm.md) operations, and only work when targeting a legacy Swarm cluster. For instructions on deploying a compose project to the newer integrated swarm mode, consult the [Docker Stacks](/compose/bundles.md) documentation.
+> **Note**: The instructions in this section refer to [legacy Docker Swarm](swarm.md) operations, and only work when targeting a legacy Swarm cluster. For instructions on deploying a compose project to the newer integrated swarm mode, consult the [Docker Stacks](../engine/reference/commandline/stack_deploy.md) documentation.
 
 When [deploying a Compose application to a Swarm cluster](swarm.md), you can make use of the built-in `overlay` driver to enable multi-host communication between containers with no changes to your Compose file or application code.
 
-Consult the [Getting started with multi-host networking](/engine/userguide/networking/get-started-overlay/) to see how to set up a Swarm cluster. The cluster uses the `overlay` driver by default, but you can specify it explicitly if you prefer - see below for how to do this.
+Consult the [Getting started with multi-host networking](../network/network-tutorial-overlay.md) to see how to set up a Swarm cluster. The cluster uses the `overlay` driver by default, but you can specify it explicitly if you prefer - see below for how to do this.
 
 ## Specify custom networks
 
@@ -129,9 +128,9 @@ Here's an example Compose file defining two custom networks. The `proxy` service
           foo: "1"
           bar: "2"
 
-Networks can be configured with static IP addresses by setting the [ipv4_address and/or ipv6_address](compose-file/compose-file-v2.md#ipv4-address-ipv6-address) for each attached network.
+Networks can be configured with static IP addresses by setting the [ipv4_address and/or ipv6_address](compose-file/compose-file-v2.md#ipv4_address-ipv6_address) for each attached network.
 
-Networks can also be given a [custom name](compose-file/index.md#name-1) (since version 3.5):
+Networks can also be given a [custom name](compose-file/index.md#network-configuration-reference) (since version 3.5):
 
     version: "3.5"
     networks:

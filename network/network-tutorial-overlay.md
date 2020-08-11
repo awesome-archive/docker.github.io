@@ -2,6 +2,8 @@
 title: Networking with overlay networks
 description: Tutorials for networking with swarm services and standalone containers on multiple Docker daemons
 keywords: networking, bridge, routing, ports, swarm, overlay
+redirect_from:
+- /engine/userguide/networking/get-started-overlay/
 ---
 
 This series of tutorials deals with networking for swarm services.
@@ -64,7 +66,7 @@ If you don't have three hosts handy, an easy solution is to set up three
 Ubuntu hosts on a cloud provider such as Amazon EC2, all on the same network
 with all communications allowed to all hosts on that network (using a mechanism
 such as EC2 security groups), and then to follow the
-[installation instructions for Docker Engine - Community on Ubuntu](/engine/installation/linux/docker-ce/ubuntu.md).
+[installation instructions for Docker Engine - Community on Ubuntu](../engine/install/ubuntu.md).
 
 ### Walkthrough
 
@@ -161,7 +163,7 @@ connect a service to each of them.
     $ docker network create -d overlay nginx-net
     ```
 
-    You don't need to create the overlay network on the other nodes, beacause it
+    You don't need to create the overlay network on the other nodes, because it
     will be automatically created when one of those nodes starts running a
     service task which requires it.
 

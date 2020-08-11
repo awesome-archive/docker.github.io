@@ -7,7 +7,7 @@ title: Install Docker Toolbox on macOS
 
 Docker Toolbox provides a way to use Docker on older Macs
 that do not meet
-minimal system requirements for [Docker Desktop for Mac](/docker-for-mac/index.md).
+minimal system requirements for [Docker Desktop for Mac](../docker-for-mac/index.md).
 
 ## What you get and how it works
 
@@ -28,7 +28,7 @@ attach to a small Linux VM on your machine. This VM hosts
 Docker Engine for you on your Mac.
 
 >**Tip**: One of the advantages of the newer
-[Docker Desktop for Mac](/docker-for-mac/index.md) solution is that
+[Docker Desktop for Mac](../docker-for-mac/index.md) solution is that
 it uses native virtualization and does not require
 VirtualBox to run Docker.
 
@@ -47,7 +47,7 @@ software. To find out what version of the OS you have:
     If you aren't using a supported version, you could consider upgrading your
     operating system.
 
-    If you have macOS 10.10.3 Yosemite or newer, consider using [Docker Desktop for
+    If you have macOS 10.13.0 High Sierra or newer, consider using [Docker Desktop for
     Mac](/docker-for-mac/) instead. It runs natively on the Mac, so there is no
     need for a pre-configured Docker QuickStart shell. It uses the native macOS
     Hypervisor framework for virtualization, instead of Oracle VirutalBox. Full
@@ -275,7 +275,7 @@ To uninstall Toolbox on a Mac, do the following:
 
     This step is optional because if you plan
     to re-install Docker Machine as a part
-    of [Docker Desktop for Mac](/docker-for-mac/index.md), you can import and
+    of [Docker Desktop for Mac](../docker-for-mac/index.md), you can import and
     continue to manage those machines through Docker.
 
 3.  In your "Applications" folder, remove the "Docker" directory,
@@ -308,12 +308,12 @@ To uninstall Toolbox on a Mac, do the following:
 
 ## Next steps
 
-* Try the [Get started](/get-started/) tutorial.
+* Try the [Get started](../get-started/index.md) tutorial.
 
-* Dig in deeper with [more tutorials and examples](/engine/tutorials/index.md) on building images, running containers, networking, managing data, and storing images on Docker Hub.
+* Dig in deeper with [more tutorials and examples](../engine/tutorials/index.md) on building images, running containers, networking, managing data, and storing images on Docker Hub.
 
-* [Learn about Kitematic](/kitematic/userguide.md)
+* [Learn about Kitematic](../kitematic/userguide.md)
 
-* [Learn about Docker Machine](/machine/overview.md)
+* [Learn about Docker Machine](../machine/overview.md)
 
-* [Learn about Docker Compose](/compose/overview.md)
+* [Learn about Docker Compose](../compose/index.md)

@@ -43,10 +43,12 @@ examples below. Keep the following notable differences in mind:
   UID, GID, and mode are not supported for configs. Configs are currently only
   accessible by administrators and users with `system` access within the
   container.
-  
-- On Windows, create or update a service using `--credential-spec` with the `config://<config-name>` format. 
-This passes the gMSA credentials file directly to nodes before a container starts. No gMSA credentials are written 
-to disk on worker nodes. For more information, refer to [Deploy services to a swarm](/engine/swarmservices/).
+
+- On Windows, create or update a service using `--credential-spec` with the
+  `config://<config-name>` format.  This passes the gMSA credentials file
+  directly to nodes before a container starts. No gMSA credentials are written
+  to disk on worker nodes. For more information, refer to
+  [Deploy services to a swarm](services.md#gmsa-for-swarm).
 
 ## How Docker manages configs
 
@@ -108,12 +110,12 @@ those remaining after a `docker service update --config-rm`.
 ## Read more about `docker config` commands
 
 Use these links to read about specific commands, or continue to the
-[example about using configs with a service](configs.md#example-use-configs-with-a-service).
+[example about using configs with a service](#advanced-example-use-configs-with-a-nginx-service).
 
-- [`docker config create`](/engine/reference/commandline/config_create.md)
-- [`docker config inspect`](/engine/reference/commandline/config_inspect.md)
-- [`docker config ls`](/engine/reference/commandline/config_ls.md)
-- [`docker config rm`](/engine/reference/commandline/config_rm.md)
+- [`docker config create`](../reference/commandline/config_create.md)
+- [`docker config inspect`](../reference/commandline/config_inspect.md)
+- [`docker config ls`](../reference/commandline/config_ls.md)
+- [`docker config rm`](../reference/commandline/config_rm.md)
 
 ## Examples
 
@@ -128,13 +130,13 @@ Docker configs.
 
 The `docker stack` command supports defining configs in a Compose file.
 However, the `configs` key is not supported for `docker compose`. See
-[the Compose file reference](/compose/compose-file/#configs) for details.
+[the Compose file reference](../../compose/compose-file/index.md#configs) for details.
 
 ### Simple example: Get started with configs
 
 This simple example shows how configs work in just a few commands. For a
 real-world example, continue to
-[Intermediate example: Use configs with a Nginx service](#advanced-example-use-configs-with-a-nginx-service).
+[Advanced example: Use configs with a Nginx service](#advanced-example-use-configs-with-a-nginx-service).
 
 1.  Add a config to Docker. The `docker config create` command reads standard
     input because the last argument, which represents the file to read the
@@ -159,7 +161,7 @@ real-world example, continue to
     $ docker service ps redis
 
     ID            NAME     IMAGE         NODE              DESIRED STATE  CURRENT STATE          ERROR  PORTS
-    bkna6bpn8r1a  redis.1  redis:alpine  ip-172-31-46-109  Running        Running 8 seconds ago  
+    bkna6bpn8r1a  redis.1  redis:alpine  ip-172-31-46-109  Running        Running 8 seconds ago
     ```
 
 4.  Get the ID of the `redis` service task container using `docker ps`, so that
@@ -176,7 +178,7 @@ real-world example, continue to
 
     $ docker container exec $(docker ps --filter name=redis -q) ls -l /my-config
 
-    -r--r--r--    1 root     root            12 Jun  5 20:49 my-config                                                     
+    -r--r--r--    1 root     root            12 Jun  5 20:49 my-config
 
     $ docker container exec $(docker ps --filter name=redis -q) cat /my-config
 
@@ -274,6 +276,56 @@ This example assumes that you have PowerShell installed.
     docker service rm my-iis
 
     docker config rm homepage
+    ```
+
+### Example: Use a templated config
+
+To create a configuration in which the content will be generated using a
+template engine, use the `--template-driver` parameter and specify the engine
+name as its argument. The template will be rendered when container is created.
+
+1.  Save the following into a new file `index.html.tmpl`.
+
+    ```html
+    <html>
+      <head><title>Hello Docker</title></head>
+      <body>
+        <p>Hello {% raw %}{{ env "HELLO" }}{% endraw %}! I'm service {% raw %}{{ .Service.Name }}{% endraw %}.</p>
+      </body>
+    </html>
+    ```
+
+2.  Save the `index.html.tmpl` file as a swarm config named `homepage`. Provide
+    parameter `--template-driver` and specify `golang` as template engine.
+
+    ```bash
+    $ docker config create --template-driver golang homepage index.html.tmpl
+    ```
+
+3.  Create a service that runs Nginx and has access to the environment variable
+    HELLO and to the config.
+
+    ```bash
+    $ docker service create \
+         --name hello-template \
+         --env HELLO="Docker" \
+         --config source=homepage,target=/usr/share/nginx/html/index.html \
+         --publish published=3000,target=80 \
+         nginx:alpine
+    ```
+
+4.  Verify that the service is operational: you can reach the Nginx server, and
+    that the correct output is being served.
+
+    ```bash
+    $ curl http://0.0.0.0:3000
+
+    <html>
+      <head><title>Hello Docker</title></head>
+      <body>
+        <p>Hello Docker! I'm service hello-template.</p>
+      </body>
+    </html>
     ```
 
 ### Advanced example: Use configs with a Nginx service
